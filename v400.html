@@ -1,0 +1,2261 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://orsointraprendente.github.io/24OdG2026/v301.html -->
+<html lang="it"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0e7490">
+    <title>24OdG - Torneo Arbitri</title>
+    <link rel="manifest" href="https://orsointraprendente.github.io/24OdG2026/manifest.json">
+<link rel="apple-touch-icon" href="https://orsointraprendente.github.io/24OdG2026/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://orsointraprendente.github.io/24OdG2026/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="https://orsointraprendente.github.io/24OdG2026/icon-512.png">
+<link rel="shortcut icon" href="https://orsointraprendente.github.io/24OdG2026/favicon.ico">
+<link rel="icon" type="image/x-icon" href="https://orsointraprendente.github.io/24OdG2026/favicon.ico">
+    <script src="./24OdG - Torneo Arbitri_files/saved_resource"></script>
+    <script src="./24OdG - Torneo Arbitri_files/papaparse.min.js"></script>
+    <script src="./24OdG - Torneo Arbitri_files/jspdf.umd.min.js"></script>
+    <style>
+        @keyframes pulse-red {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .timer-active {
+            animation: pulse-red 1.5s ease-in-out infinite;
+        }
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+        
+        /* Toast Notifications */
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        .toast {
+            animation: slideIn 0.3s ease-out;
+        }
+        .toast-exit {
+            animation: slideOut 0.3s ease-in forwards;
+        }
+        
+        /* Loading Spinner */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Timeline */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #0e7490;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #22d3ee;
+        }
+        
+        /* Offline indicator pulse */
+        @keyframes offlinePulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .offline-indicator {
+            animation: offlinePulse 2s ease-in-out infinite;
+        }
+        
+        /* Goal celebration */
+        @keyframes goalCelebration {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .goal-celebration {
+            animation: goalCelebration 0.5s ease-out;
+        }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mb-2{margin-bottom:0.5rem}.mb-8{margin-bottom:2rem}.mt-6{margin-top:1.5rem}.block{display:block}.flex{display:flex}.min-h-screen{min-height:100vh}.w-full{width:100%}.max-w-md{max-width:28rem}.items-center{align-items:center}.justify-center{justify-content:center}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.rounded{border-radius:0.25rem}.rounded-lg{border-radius:0.5rem}.border{border-width:1px}.border-blue-700{--tw-border-opacity:1;border-color:rgb(29 78 216 / var(--tw-border-opacity, 1))}.border-gray-600{--tw-border-opacity:1;border-color:rgb(75 85 99 / var(--tw-border-opacity, 1))}.border-gray-700{--tw-border-opacity:1;border-color:rgb(55 65 81 / var(--tw-border-opacity, 1))}.bg-gray-900{--tw-bg-opacity:1;background-color:rgb(17 24 39 / var(--tw-bg-opacity, 1))}.bg-blue-900{--tw-bg-opacity:1;background-color:rgb(30 58 138 / var(--tw-bg-opacity, 1))}.bg-cyan-600{--tw-bg-opacity:1;background-color:rgb(8 145 178 / var(--tw-bg-opacity, 1))}.bg-gray-700{--tw-bg-opacity:1;background-color:rgb(55 65 81 / var(--tw-bg-opacity, 1))}.bg-gray-800{--tw-bg-opacity:1;background-color:rgb(31 41 55 / var(--tw-bg-opacity, 1))}.bg-opacity-30{--tw-bg-opacity:0.3}.bg-gradient-to-br{background-image:linear-gradient(to bottom right, var(--tw-gradient-stops))}.from-gray-900{--tw-gradient-from:#111827 var(--tw-gradient-from-position);--tw-gradient-to:rgb(17 24 39 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-gray-800{--tw-gradient-to:#1f2937 var(--tw-gradient-to-position)}.p-4{padding:1rem}.p-8{padding:2rem}.px-4{padding-left:1rem;padding-right:1rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.text-center{text-align:center}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.text-gray-100{--tw-text-opacity:1;color:rgb(243 244 246 / var(--tw-text-opacity, 1))}.text-blue-300{--tw-text-opacity:1;color:rgb(147 197 253 / var(--tw-text-opacity, 1))}.text-cyan-400{--tw-text-opacity:1;color:rgb(34 211 238 / var(--tw-text-opacity, 1))}.text-gray-300{--tw-text-opacity:1;color:rgb(209 213 219 / var(--tw-text-opacity, 1))}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.hover\:bg-cyan-700:hover{--tw-bg-opacity:1;background-color:rgb(14 116 144 / var(--tw-bg-opacity, 1))}.focus\:border-cyan-500:focus{--tw-border-opacity:1;border-color:rgb(6 182 212 / var(--tw-border-opacity, 1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}</style></head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <div id="app">
+                    <div class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center p-4">
+                        <div class="bg-gray-800 rounded-lg shadow-2xl border border-gray-700 p-8 max-w-md w-full">
+                            <div class="text-center mb-8">
+                                <h1 class="text-4xl font-bold text-cyan-400 mb-2">24OdG</h1>
+                                <p class="text-gray-400">Torneo Arbitri</p>
+                            </div>
+                            
+                            <form onsubmit="app.effettuaLogin(event)" class="space-y-4">
+                                <div>
+                                    <label class="block text-sm mb-2 text-gray-300">Email Arbitro</label>
+                                    <input type="email" id="email-input" placeholder="arbitro@24odg.it" class="w-full bg-gray-700 border border-gray-600 rounded px-4 py-3 text-white focus:border-cyan-500 focus:outline-none" required="">
+                                </div>
+                                
+                                <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-4 rounded mt-6">
+                                    🔒 Accedi
+                                </button>
+                            </form>
+                            
+                            <div class="mt-6 p-4 bg-blue-900 bg-opacity-30 border border-blue-700 rounded-lg">
+                                <p class="text-xs text-blue-300">
+                                    <span class="font-bold">ℹ️ Nota:</span> Solo arbitri autorizzati possono accedere.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/+esm';
+
+        const SUPABASE_URL = 'https://ouvlmrfkouacqazitmwd.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im91dmxtcmZrb3VhY3Fheml0bXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzOTcxNDcsImV4cCI6MjA3Njk3MzE0N30.1Yb01L3s17e9XvnOJCPtRNjLhshKnb5LSOdGz3omloA';
+
+        const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+        window.supabase = supabase;
+
+        const ARBITRI_AUTORIZZATI = [
+            'stepengo@gmail.com',
+            'arbitro1@24odg.it',
+            'arbitro2@24odg.it',
+            'arbitro3@24odg.it',
+            'arbitro4@24odg.it',
+            'arbitro5@24odg.it',
+        ];
+
+        const TIMEOUT_ARBITRO = 30000; // 30 secondi
+
+        window.app = {
+            partite: [],
+            squadre: {},
+            connesso: false,
+            vista: 'partite',
+            sottovista: 'tutte',
+            partitaSelezionata: null,
+            timerInterval: null,
+            heartbeatInterval: null,
+            filtroCampo: 'tutti',
+            filtroOrario: 'tutti',
+            utenteAutenticato: null,
+            emailUtente: '',
+            pendingUpdates: [],
+            isLoading: false,
+
+            async init() {
+                const emailSalvata = localStorage.getItem('arbitro_email');
+                if (emailSalvata && ARBITRI_AUTORIZZATI.includes(emailSalvata)) {
+                    this.utenteAutenticato = emailSalvata;
+                    this.emailUtente = emailSalvata;
+                    this.mostraCaricamento('Caricamento dati...');
+                    await this.caricaSquadre();
+                    await this.caricaPartite();
+                    this.sottoscrivi();
+                    this.sincronizzaPendingUpdates();
+                    this.setupBeforeUnload();
+                    this.render();
+                } else {
+                    this.renderLogin();
+                }
+            },
+
+            // === TOAST NOTIFICATIONS ===
+            mostraToast(messaggio, tipo = 'success', durata = 3000) {
+                const colori = {
+                    success: 'bg-green-600 border-green-500',
+                    error: 'bg-red-600 border-red-500',
+                    warning: 'bg-yellow-600 border-yellow-500',
+                    info: 'bg-cyan-600 border-cyan-500',
+                    goal: 'bg-yellow-500 border-yellow-400'
+                };
+                const icone = {
+                    success: '✓',
+                    error: '✕',
+                    warning: '⚠️',
+                    info: 'ℹ️',
+                    goal: '⚽'
+                };
+                
+                let container = document.getElementById('toast-container');
+                if (!container) {
+                    container = document.createElement('div');
+                    container.id = 'toast-container';
+                    container.className = 'fixed top-4 right-4 z-50 space-y-2';
+                    document.body.appendChild(container);
+                }
+                
+                const toast = document.createElement('div');
+                toast.className = `toast ${colori[tipo]} text-white px-4 py-3 rounded-lg shadow-lg border-l-4 flex items-center gap-3 min-w-[280px]`;
+                toast.innerHTML = `
+                    <span class="text-xl">${icone[tipo]}</span>
+                    <span class="flex-1 text-sm font-medium">${messaggio}</span>
+                `;
+                container.appendChild(toast);
+                
+                // Vibrazione per feedback tattile
+                if ('vibrate' in navigator && tipo !== 'info') {
+                    navigator.vibrate(tipo === 'goal' ? [100, 50, 100] : [50]);
+                }
+                
+                setTimeout(() => {
+                    toast.classList.add('toast-exit');
+                    setTimeout(() => toast.remove(), 300);
+                }, durata);
+            },
+
+            // === LOADING SPINNER ===
+            mostraCaricamento(messaggio = 'Caricamento...') {
+                this.isLoading = true;
+                document.getElementById('app').innerHTML = `
+                    <div class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center p-4">
+                        <div class="text-center">
+                            <div class="w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full spinner mx-auto mb-4"></div>
+                            <p class="text-gray-400 text-lg">${messaggio}</p>
+                            <p class="text-gray-500 text-sm mt-2">24OdG Torneo Arbitri</p>
+                        </div>
+                    </div>
+                `;
+            },
+
+            nascondiCaricamento() {
+                this.isLoading = false;
+            },
+
+            // === BEFOREUNLOAD CONFIRMATION ===
+            setupBeforeUnload() {
+                window.addEventListener('beforeunload', (e) => {
+                    if (this.partitaSelezionata) {
+                        const p = this.partite.find(x => x.id === this.partitaSelezionata);
+                        if (p && p.timerAttivo) {
+                            e.preventDefault();
+                            e.returnValue = 'Hai una partita in corso con il timer attivo. Sei sicuro di voler uscire?';
+                            return e.returnValue;
+                        }
+                    }
+                    if (this.pendingUpdates.length > 0) {
+                        e.preventDefault();
+                        e.returnValue = 'Ci sono modifiche non salvate. Sei sicuro di voler uscire?';
+                        return e.returnValue;
+                    }
+                });
+            },
+
+            // === OFFLINE MODE WITH RETRY ===
+            async salvaConRetry(id, updates) {
+                try {
+                    await this.aggiornaPartita(id, updates);
+                    return true;
+                } catch (error) {
+                    console.error('Errore salvataggio, salvato in locale:', error);
+                    this.pendingUpdates.push({ id, updates, timestamp: Date.now() });
+                    localStorage.setItem('pending_updates', JSON.stringify(this.pendingUpdates));
+                    this.mostraToast('⚠️ Offline - Salvato localmente', 'warning');
+                    return false;
+                }
+            },
+
+            async sincronizzaPendingUpdates() {
+                const saved = localStorage.getItem('pending_updates');
+                if (saved) {
+                    this.pendingUpdates = JSON.parse(saved);
+                }
+                
+                if (this.pendingUpdates.length > 0 && this.connesso) {
+                    this.mostraToast(`Sincronizzando ${this.pendingUpdates.length} modifiche...`, 'info');
+                    
+                    for (const update of [...this.pendingUpdates]) {
+                        try {
+                            await this.aggiornaPartita(update.id, update.updates);
+                            this.pendingUpdates = this.pendingUpdates.filter(u => u !== update);
+                        } catch (error) {
+                            console.error('Errore sync:', error);
+                        }
+                    }
+                    
+                    localStorage.setItem('pending_updates', JSON.stringify(this.pendingUpdates));
+                    
+                    if (this.pendingUpdates.length === 0) {
+                        this.mostraToast('✓ Sincronizzazione completata!', 'success');
+                    }
+                }
+            },
+
+            // === GET CURRENT MATCH TIME ===
+            getTempoAttualePartita(id) {
+                const p = this.partite.find(x => x.id === id);
+                if (!p) return 0;
+                
+                let secondi = p.timerSecondi;
+                if (p.timerAttivo) {
+                    const ora = Date.now();
+                    const elapsed = Math.floor((ora - p.timerTimestamp) / 1000);
+                    secondi = p.timerSecondi + elapsed;
+                }
+                return secondi;
+            },
+
+            getMinutoPartita(id) {
+                return Math.floor(this.getTempoAttualePartita(id) / 60) + 1;
+            },
+
+            // === NOTE ARBITRO ===
+            async salvaNote(id) {
+                const textarea = document.getElementById(`note-arbitro-${id}`);
+                if (!textarea) return;
+                
+                const note = textarea.value;
+                const p = this.partite.find(x => x.id === id);
+                if (p) {
+                    p.noteArbitro = note;
+                    await this.salvaPartitaAsync(id, { noteArbitro: note });
+                    this.mostraToast('Note salvate', 'info', 1500);
+                }
+            },
+
+            renderLogin() {
+                document.getElementById('app').innerHTML = `
+                    <div class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center p-4">
+                        <div class="bg-gray-800 rounded-lg shadow-2xl border border-gray-700 p-8 max-w-md w-full">
+                            <div class="text-center mb-8">
+                                <h1 class="text-4xl font-bold text-cyan-400 mb-2">24OdG</h1>
+                                <p class="text-gray-400">Torneo Arbitri</p>
+                            </div>
+                            
+                            <form onsubmit="app.effettuaLogin(event)" class="space-y-4">
+                                <div>
+                                    <label class="block text-sm mb-2 text-gray-300">Email Arbitro</label>
+                                    <input type="email" id="email-input" placeholder="arbitro@24odg.it" class="w-full bg-gray-700 border border-gray-600 rounded px-4 py-3 text-white focus:border-cyan-500 focus:outline-none" required>
+                                </div>
+                                
+                                <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-4 rounded mt-6">
+                                    🔒 Accedi
+                                </button>
+                            </form>
+                            
+                            <div class="mt-6 p-4 bg-blue-900 bg-opacity-30 border border-blue-700 rounded-lg">
+                                <p class="text-xs text-blue-300">
+                                    <span class="font-bold">ℹ️ Nota:</span> Solo arbitri autorizzati possono accedere.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+
+            async effettuaLogin(event) {
+                event.preventDefault();
+                const email = document.getElementById('email-input').value.trim();
+                
+                if (!ARBITRI_AUTORIZZATI.includes(email)) {
+                    this.mostraToast('Email non autorizzata. Contatta l\'amministratore.', 'error');
+                    return;
+                }
+                
+                this.utenteAutenticato = email;
+                this.emailUtente = email;
+                localStorage.setItem('arbitro_email', email);
+                
+                // Mostra loading e attendi i dati
+                this.mostraCaricamento('Accesso in corso...');
+                
+                await this.caricaSquadre();
+                await this.caricaPartite();
+                this.sottoscrivi();
+                this.setupBeforeUnload();
+                this.sincronizzaPendingUpdates();
+                
+                this.mostraToast(`Benvenuto, ${email.split('@')[0]}!`, 'success');
+                this.render();
+            },
+
+            logout() {
+                if (!confirm('Vuoi effettuare il logout?')) return;
+                localStorage.removeItem('arbitro_email');
+                this.utenteAutenticato = null;
+                this.emailUtente = '';
+                if (this.timerInterval) clearInterval(this.timerInterval);
+                if (this.heartbeatInterval) clearInterval(this.heartbeatInterval);
+                this.renderLogin();
+            },
+
+            async caricaSquadre() {
+                try {
+                    const { data, error } = await supabase.from('squadre').select('*');
+                    if (error) throw error;
+                    
+                    this.squadre = {};
+                    data.forEach(row => {
+                        if (!this.squadre[row.nome_squadra]) {
+                            this.squadre[row.nome_squadra] = [];
+                        }
+                        this.squadre[row.nome_squadra].push({
+                            numero: row.numero,
+                            nome: row.nome_giocatore
+                        });
+                    });
+                } catch (error) {
+                    console.error('Errore caricamento squadre:', error);
+                }
+            },
+
+            async salvaSquadre() {
+                try {
+                    await supabase.from('squadre').delete().neq('id', 0);
+                    const rows = [];
+                    Object.keys(this.squadre).forEach(nomeSquadra => {
+                        this.squadre[nomeSquadra].forEach(g => {
+                            rows.push({
+                                nome_squadra: nomeSquadra,
+                                numero: g.numero,
+                                nome_giocatore: g.nome
+                            });
+                        });
+                    });
+                    if (rows.length > 0) {
+                        await supabase.from('squadre').insert(rows);
+                    }
+                } catch (error) {
+                    console.error('Errore salvataggio squadre:', error);
+                }
+            },
+
+            async caricaPartite() {
+                try {
+                    const { data, error } = await supabase.from('partite').select('*')
+                        .order('orario', { ascending: true })
+                        .order('campo', { ascending: true });
+                    
+                    if (error) throw error;
+                    
+                    this.partite = data.map(row => ({
+                        id: row.id,
+                        campo: row.campo || 1,
+                        orario: row.orario || '',
+                        squadraA: row.squadra_a,
+                        squadraB: row.squadra_b,
+                        golA: row.gol_a || [],
+                        golB: row.gol_b || [],
+                        scalpiA: row.scalpi_a || [],
+                        scalpiB: row.scalpi_b || [],
+                        vuotiA: row.vuoti_a || [],
+                        vuotiB: row.vuoti_b || [],
+                        espulsiA: row.espulsi_a || [],
+                        espulsiB: row.espulsi_b || [],
+                        punteggioA: row.punteggio_a || 0,
+                        punteggioB: row.punteggio_b || 0,
+                        puntiA: row.punti_a || 0,
+                        puntiB: row.punti_b || 0,
+                        mvpA: row.mvp_a || '',
+                        mvpB: row.mvp_b || '',
+                        completata: row.completata || false,
+                        timerSecondi: row.timer_secondi || 0,
+                        timerTempo: row.timer_tempo || 1,
+                        timerAttivo: row.timer_attivo || false,
+                        timerTimestamp: row.timer_timestamp || 0,
+                        recupero1Tempo: row.recupero_1tempo || 0,
+                        recupero2Tempo: row.recupero_2tempo || 0,
+                        arbitroAttivo: row.arbitro_attivo || '',
+                        arbitroTimestamp: row.arbitro_timestamp || 0,
+                        falliDifesaA: row.falli_difesa_a || 0,
+                        falliDifesaB: row.falli_difesa_b || 0,
+                        vuotiSquadraA: row.vuoti_squadra_a || 0,
+                        vuotiSquadraB: row.vuoti_squadra_b || 0,
+                        noteArbitro: row.note_arbitro || ''
+                    }));
+                    
+                    this.connesso = true;
+                    this.sincronizzaTimer();
+                } catch (error) {
+                    console.error('Errore caricamento partite:', error);
+                    this.connesso = false;
+                }
+            },
+
+            sottoscrivi() {
+                supabase.channel('db-changes')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'partite' }, 
+                        async () => {
+                            await this.caricaPartite();
+                            this.render();
+                        }
+                    )
+                    .subscribe();
+            },
+
+            sincronizzaTimer() {
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                }
+
+                if (this.partitaSelezionata) {
+                    const p = this.partite.find(x => x.id === this.partitaSelezionata);
+                    if (p && p.timerAttivo) {
+                        const ora = Date.now();
+                        const elapsed = Math.floor((ora - p.timerTimestamp) / 1000);
+                        const secondiCorretti = p.timerSecondi + elapsed;
+                        
+                        this.aggiornaTimerDisplay(secondiCorretti, p.timerTempo);
+                        
+                        this.timerInterval = setInterval(() => {
+                            this.aggiornaTimerLocale();
+                        }, 1000);
+                    }
+                }
+            },
+
+            aggiornaTimerLocale() {
+                if (!this.partitaSelezionata) return;
+                
+                const p = this.partite.find(x => x.id === this.partitaSelezionata);
+                if (!p || !p.timerAttivo) return;
+                
+                const ora = Date.now();
+                const elapsed = Math.floor((ora - p.timerTimestamp) / 1000);
+                const secondiCorretti = p.timerSecondi + elapsed;
+                
+                const tempoRegolamentare = 900;
+                const recupero = p.timerTempo === 1 ? p.recupero1Tempo : p.recupero2Tempo;
+                const tempoTotale = tempoRegolamentare + (recupero * 60);
+                
+                if (secondiCorretti >= tempoTotale) {
+                    if (this.timerInterval) {
+                        clearInterval(this.timerInterval);
+                        this.timerInterval = null;
+                    }
+                    
+                    if (p.timerTempo === 1) {
+                        this.pausaTimer(p.id).then(() => {
+                            this.mostraToast('⏱️ FINE 1° TEMPO! Premi Avvia per il 2° tempo', 'warning', 6000);
+                            if ('vibrate' in navigator) {
+                                navigator.vibrate([200, 100, 200]);
+                            }
+                            this.aggiornaPartita(p.id, {
+                                timerSecondi: 0,
+                                timerTempo: 2,
+                                timerAttivo: false
+                            });
+                        });
+                    } else {
+                        this.fermaTimer(p.id).then(() => {
+                            this.mostraToast('🏁 FINE PARTITA! Ora puoi finalizzare', 'success', 8000);
+                            if ('vibrate' in navigator) {
+                                navigator.vibrate([300, 100, 300, 100, 500]);
+                            }
+                        });
+                    }
+                } else {
+                    this.aggiornaTimerDisplay(secondiCorretti, p.timerTempo);
+                }
+            },
+
+            async prelevaControlloPartita(id) {
+                const p = this.partite.find(x => x.id === id);
+                if (!p) return false;
+
+                const ora = Date.now();
+                
+                if (p.arbitroAttivo && p.arbitroAttivo !== this.emailUtente) {
+                    const tempoTrascorso = ora - p.arbitroTimestamp;
+                    
+                    if (tempoTrascorso < TIMEOUT_ARBITRO) {
+                        const secondiRimasti = Math.ceil((TIMEOUT_ARBITRO - tempoTrascorso) / 1000);
+                        alert(`⚠️ ${p.arbitroAttivo} sta gestendo questa partita.\n\nRiprova tra ${secondiRimasti} secondi.`);
+                        return false;
+                    }
+                }
+
+                try {
+                    await supabase.from('partite').update({
+                        arbitro_attivo: this.emailUtente,
+                        arbitro_timestamp: ora
+                    }).eq('id', id);
+
+                    if (this.heartbeatInterval) clearInterval(this.heartbeatInterval);
+                    this.heartbeatInterval = setInterval(() => {
+                        this.inviaHeartbeat(id);
+                    }, 10000);
+
+                    return true;
+                } catch (error) {
+                    console.error('Errore acquisizione controllo:', error);
+                    return false;
+                }
+            },
+
+            async inviaHeartbeat(id) {
+                if (!this.partitaSelezionata || this.partitaSelezionata !== id) {
+                    if (this.heartbeatInterval) {
+                        clearInterval(this.heartbeatInterval);
+                        this.heartbeatInterval = null;
+                    }
+                    return;
+                }
+
+                try {
+                    await supabase.from('partite').update({
+                        arbitro_timestamp: Date.now()
+                    }).eq('id', id);
+                } catch (error) {
+                    console.error('Errore heartbeat:', error);
+                }
+            },
+
+            async rilasciaControlloPartita(id) {
+                if (this.heartbeatInterval) {
+                    clearInterval(this.heartbeatInterval);
+                    this.heartbeatInterval = null;
+                }
+
+                try {
+                    await supabase.from('partite').update({
+                        arbitro_attivo: '',
+                        arbitro_timestamp: 0
+                    }).eq('id', id);
+                } catch (error) {
+                    console.error('Errore rilascio controllo:', error);
+                }
+            },
+
+            async aggiungiPartita(campo, orario, squadraA, squadraB) {
+                try {
+                    const { error } = await supabase.from('partite').insert([{
+                        campo, orario,
+                        squadra_a: squadraA, squadra_b: squadraB,
+                        gol_a: [], gol_b: [], scalpi_a: [], scalpi_b: [],
+                        vuoti_a: [], vuoti_b: [], espulsi_a: [], espulsi_b: [],
+                        punteggio_a: 0, punteggio_b: 0,
+                        punti_a: 0, punti_b: 0, mvp_a: '', mvp_b: '',
+                        completata: false,
+                        timer_secondi: 0, timer_tempo: 1, timer_attivo: false, timer_timestamp: 0,
+                        recupero_1tempo: 0, recupero_2tempo: 0,
+                        arbitro_attivo: '', arbitro_timestamp: 0,
+                        falli_difesa_a: 0, falli_difesa_b: 0,
+                        vuoti_squadra_a: 0, vuoti_squadra_b: 0
+                    }]);
+                    if (error) throw error;
+                    this.mostraToast('✓ Partita aggiunta!', 'success');
+                } catch (error) {
+                    this.mostraToast('Errore aggiunta partita: ' + error.message, 'error');
+                }
+            },
+
+            async aggiornaPartita(id, updates) {
+                try {
+                    const p = this.partite.find(x => x.id === id);
+                    const u = { ...p, ...updates };
+                    
+                    const dbUpdates = {
+                        squadra_a: u.squadraA, squadra_b: u.squadraB,
+                        gol_a: u.golA, gol_b: u.golB,
+                        scalpi_a: u.scalpiA, scalpi_b: u.scalpiB,
+                        vuoti_a: u.vuotiA, vuoti_b: u.vuotiB,
+                        espulsi_a: u.espulsiA, espulsi_b: u.espulsiB,
+                        punteggio_a: u.punteggioA, punteggio_b: u.punteggioB,
+                        punti_a: u.puntiA, punti_b: u.puntiB,
+                        mvp_a: u.mvpA, mvp_b: u.mvpB,
+                        completata: u.completata
+                    };
+
+                    if ('timerSecondi' in updates) dbUpdates.timer_secondi = u.timerSecondi;
+                    if ('timerTempo' in updates) dbUpdates.timer_tempo = u.timerTempo;
+                    if ('timerAttivo' in updates) dbUpdates.timer_attivo = u.timerAttivo;
+                    if ('timerTimestamp' in updates) dbUpdates.timer_timestamp = u.timerTimestamp;
+                    if ('recupero1Tempo' in updates) dbUpdates.recupero_1tempo = u.recupero1Tempo;
+                    if ('recupero2Tempo' in updates) dbUpdates.recupero_2tempo = u.recupero2Tempo;
+                    if ('falliDifesaA' in updates) dbUpdates.falli_difesa_a = u.falliDifesaA;
+                    if ('falliDifesaB' in updates) dbUpdates.falli_difesa_b = u.falliDifesaB;
+                    if ('vuotiSquadraA' in updates) dbUpdates.vuoti_squadra_a = u.vuotiSquadraA;
+                    if ('vuotiSquadraB' in updates) dbUpdates.vuoti_squadra_b = u.vuotiSquadraB;
+                    if ('noteArbitro' in updates) dbUpdates.note_arbitro = u.noteArbitro;
+                    
+                    const { error } = await supabase.from('partite').update(dbUpdates).eq('id', id);
+                    if (error) throw error;
+                    
+                    const idx = this.partite.findIndex(x => x.id === id);
+                    if (idx !== -1) {
+                        this.partite[idx] = u;
+                    }
+                    
+                    this.render();
+                } catch (error) {
+                    console.error('Errore aggiornamento partita:', error);
+                }
+            },
+
+            async eliminaPartita(id) {
+                if (!confirm('Eliminare questa partita?')) return;
+                try {
+                    const { error } = await supabase.from('partite').delete().eq('id', id);
+                    if (error) throw error;
+                } catch (error) {
+                    console.error('Errore eliminazione partita:', error);
+                }
+            },
+
+            formatoTempo(secondi) {
+                const min = Math.floor(secondi / 60);
+                const sec = secondi % 60;
+                return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+            },
+
+            async avviaTimer(id) {
+                const p = this.partite.find(x => x.id === id);
+                if (!p) return;
+
+                const controllo = await this.prelevaControlloPartita(id);
+                if (!controllo) return;
+
+                this.partitaSelezionata = id;
+                
+                await this.aggiornaPartita(id, {
+                    timerAttivo: true,
+                    timerTimestamp: Date.now()
+                });
+
+                this.sincronizzaTimer();
+            },
+
+            async pausaTimer(id) {
+                const p = this.partite.find(x => x.id === id);
+                if (!p) return;
+
+                const ora = Date.now();
+                const elapsed = Math.floor((ora - p.timerTimestamp) / 1000);
+                const secondiAttuali = p.timerSecondi + elapsed;
+
+                await this.aggiornaPartita(id, {
+                    timerSecondi: secondiAttuali,
+                    timerAttivo: false,
+                    timerTimestamp: Date.now()
+                });
+
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = null;
+                }
+            },
+
+            async fermaTimer(id) {
+                await this.aggiornaPartita(id, {
+                    timerSecondi: 0,
+                    timerTempo: 1,
+                    timerAttivo: false,
+                    timerTimestamp: 0
+                });
+
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = null;
+                }
+            },
+
+            async aggiungiRecupero(id, minuti) {
+                const p = this.partite.find(x => x.id === id);
+                if (!p) return;
+
+                const campo = p.timerTempo === 1 ? 'recupero1Tempo' : 'recupero2Tempo';
+                const nuovoRecupero = (p[campo] || 0) + minuti;
+
+                await this.aggiornaPartita(id, {
+                    [campo]: nuovoRecupero
+                });
+
+                this.mostraToast(`+${minuti}' recupero al ${p.timerTempo}° tempo`, 'info', 2000);
+            },
+
+            aggiornaTimerDisplay(secondi, tempo) {
+                const timerEl = document.getElementById('timer-display');
+                if (timerEl) {
+                    timerEl.textContent = this.formatoTempo(secondi);
+                }
+                const tempoEl = document.getElementById('tempo-display');
+                if (tempoEl) {
+                    tempoEl.textContent = `Tempo ${tempo}/2`;
+                }
+
+                const p = this.partite.find(x => x.id === this.partitaSelezionata);
+                if (p) {
+                    const recupero = tempo === 1 ? p.recupero1Tempo : p.recupero2Tempo;
+                    const tempoTotale = 900 + (recupero * 60);
+                    const percentuale = Math.min((secondi / tempoTotale) * 100, 100);
+                    
+                    const progressBar = document.getElementById('progress-bar');
+                    if (progressBar) {
+                        progressBar.style.width = `${percentuale}%`;
+                        
+                        if (percentuale > 90) {
+                            progressBar.className = 'progress-bar h-full bg-red-500 rounded-full';
+                        } else if (percentuale > 75) {
+                            progressBar.className = 'progress-bar h-full bg-orange-500 rounded-full';
+                        } else {
+                            progressBar.className = 'progress-bar h-full bg-cyan-500 rounded-full';
+                        }
+                    }
+
+                    const recuperoEl = document.getElementById('recupero-display');
+                    if (recuperoEl && secondi > 900) {
+                        const minutiRecupero = Math.floor((secondi - 900) / 60) + 1;
+                        recuperoEl.textContent = `+${minutiRecupero}'`;
+                        recuperoEl.classList.remove('hidden');
+                    } else if (recuperoEl) {
+                        recuperoEl.classList.add('hidden');
+                    }
+                }
+            },
+
+async aggiungiFalloDifesa(id, squadra) {
+    const p = this.partite.find(x => x.id === id);
+    if (!p) return;
+
+    const squadraOpposta = squadra === 'A' ? 'B' : 'A';
+    const falloCampo = `falliDifesa${squadra}`;
+    const nuoviFalli = p[falloCampo] + 1;
+
+    if (nuoviFalli === 3) {
+        // Azzera e assegna meta' all'avversario
+        const minuto = this.getMinutoPartita(id);
+        const updates = {
+            [falloCampo]: 0
+        };
+        
+        // Aggiungi gol automatico (meta') all'avversario con timestamp
+        const golOpposti = [...p[`gol${squadraOpposta}`], `METÀ (3° Fallo difesa) (${minuto}')`];
+        updates[`gol${squadraOpposta}`] = golOpposti;
+        updates[`punteggio${squadraOpposta}`] = golOpposti.length;
+
+        await this.aggiornaPartita(id, updates);
+        this.mostraToast(`⚠️ 3° FALLO! METÀ a ${p[`squadra${squadraOpposta}`]}`, 'error', 6000);
+        if ('vibrate' in navigator) {
+            navigator.vibrate([300, 100, 300, 100, 500]);
+        }
+    } else {
+        await this.aggiornaPartita(id, {
+            [falloCampo]: nuoviFalli
+        });
+        this.mostraToast(`⚠️ Fallo difesa (${nuoviFalli}/3)`, 'warning', 3000);
+    }
+},
+            
+          generaPDF(id) {
+                const p = this.partite.find(x => x.id === id);
+                if (!p) return;
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Header
+                doc.setFontSize(20);
+                doc.setTextColor(14, 116, 144);
+                doc.text('24OdG - REFERTO PARTITA', 105, 20, { align: 'center' });
+
+                // Info partita
+                doc.setFontSize(12);
+                doc.setTextColor(0, 0, 0);
+                doc.text(`Campo: ${p.campo}`, 20, 40);
+                doc.text(`Orario: ${p.orario}`, 20, 47);
+                doc.text(`Data: ${new Date().toLocaleDateString('it-IT')}`, 20, 54);
+
+                // Risultato
+                doc.setFontSize(16);
+                doc.text(`${p.squadraA}`, 20, 70);
+                doc.text('vs', 95, 70);
+                doc.text(`${p.squadraB}`, 115, 70);
+
+                if (p.completata) {
+                    doc.setFontSize(24);
+                    doc.setTextColor(255, 193, 7);
+                    doc.text(`${p.punteggioA} - ${p.punteggioB}`, 105, 85, { align: 'center' });
+                }
+
+                // Squadra A
+                doc.setFontSize(14);
+                doc.setTextColor(14, 116, 144);
+                doc.text(p.squadraA, 20, 100);
+                
+                doc.setFontSize(10);
+                doc.setTextColor(0, 0, 0);
+                let yPos = 110;
+                
+                if (p.golA.length > 0) {
+                    doc.text(`Gol (${p.golA.length}):`, 20, yPos);
+                    yPos += 7;
+                    p.golA.forEach(g => {
+                        doc.text(`- ${g}`, 25, yPos);
+                        yPos += 6;
+                    });
+                    yPos += 5;
+                }
+
+                if (p.scalpiA.length > 0) {
+                    doc.text(`Scalpi (${p.scalpiA.length}):`, 20, yPos);
+                    yPos += 7;
+                    p.scalpiA.forEach(s => {
+                        doc.text(`- ${s}`, 25, yPos);
+                        yPos += 6;
+                    });
+                    yPos += 5;
+                }
+
+                if (p.mvpA) {
+                    doc.setTextColor(147, 51, 234);
+                    doc.text(`MVP: ${p.mvpA}`, 20, yPos);
+                }
+
+                // Squadra B
+                doc.setFontSize(14);
+                doc.setTextColor(14, 116, 144);
+                doc.text(p.squadraB, 110, 100);
+                
+                doc.setFontSize(10);
+                doc.setTextColor(0, 0, 0);
+                yPos = 110;
+                
+                if (p.golB.length > 0) {
+                    doc.text(`Gol (${p.golB.length}):`, 110, yPos);
+                    yPos += 7;
+                    p.golB.forEach(g => {
+                        doc.text(`- ${g}`, 115, yPos);
+                        yPos += 6;
+                    });
+                    yPos += 5;
+                }
+
+                if (p.scalpiB.length > 0) {
+                    doc.text(`Scalpi (${p.scalpiB.length}):`, 110, yPos);
+                    yPos += 7;
+                    p.scalpiB.forEach(s => {
+                        doc.text(`- ${s}`, 115, yPos);
+                        yPos += 6;
+                    });
+                    yPos += 5;
+                }
+
+                if (p.mvpB) {
+                    doc.setTextColor(147, 51, 234);
+                    doc.text(`MVP: ${p.mvpB}`, 110, yPos);
+                }
+
+                // Note Arbitro
+                if (p.noteArbitro) {
+                    yPos = Math.max(yPos, 180);
+                    doc.setFontSize(12);
+                    doc.setTextColor(100, 100, 100);
+                    doc.text('Note Arbitro:', 20, yPos);
+                    doc.setFontSize(10);
+                    doc.setTextColor(60, 60, 60);
+                    const noteLines = doc.splitTextToSize(p.noteArbitro, 170);
+                    doc.text(noteLines, 20, yPos + 7);
+                }
+
+                // Footer
+                doc.setFontSize(8);
+                doc.setTextColor(100, 100, 100);
+                doc.text('Generato da 24OdG Torneo Arbitri', 105, 280, { align: 'center' });
+
+                // Salva
+                doc.save(`referto_${p.squadraA}_vs_${p.squadraB}.pdf`);
+            },
+
+            aggiungiSquadraManuale() {
+                const nome = prompt('Nome della squadra:');
+                if (!nome) return;
+                
+                const giocatori = [];
+                let continua = true;
+                
+                while (continua) {
+                    const numero = prompt(`Squadra: ${nome}\nNumero maglia (lascia vuoto per terminare):`);
+                    if (!numero) break;
+                    
+                    const nomeGiocatore = prompt(`Squadra: ${nome}\nNome del giocatore n. ${numero}:`);
+                    if (!nomeGiocatore) break;
+                    
+                    giocatori.push({ numero: parseInt(numero), nome: nomeGiocatore });
+                    continua = confirm('Aggiungere un altro giocatore?');
+                }
+                
+                if (giocatori.length > 0) {
+                    this.squadre[nome] = giocatori;
+                    this.salvaSquadre();
+                    this.mostraToast(`✓ Squadra "${nome}" aggiunta (${giocatori.length} giocatori)`, 'success');
+                    this.render();
+                }
+            },
+
+            importaSquadre() {
+                const url = prompt('Link Google Sheets (3 colonne: Squadra, Numero, Nome):');
+                if (!url) return;
+                
+                let csvUrl = url;
+                if (url.includes('/edit')) {
+                    const sheetId = url.match(/\/d\/([a-zA-Z0-9-_]+)/)[1];
+                    csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
+                }
+                
+                fetch(csvUrl)
+                    .then(r => r.text())
+                    .then(csv => {
+                        Papa.parse(csv, {
+                            header: true,
+                            skipEmptyLines: true,
+                            complete: (results) => {
+                                results.data.forEach(row => {
+                                    const sq = row.Squadra || row.squadra;
+                                    const num = parseInt(row.Numero || row.numero);
+                                    const nome = row.Nome || row.nome;
+                                    if (sq && num && nome) {
+                                        if (!this.squadre[sq]) {
+                                            this.squadre[sq] = [];
+                                        }
+                                        const giocatoreEsiste = this.squadre[sq].some(g => g.numero === num && g.nome === nome);
+                                        if (!giocatoreEsiste) {
+                                            this.squadre[sq].push({ numero: num, nome });
+                                        }
+                                    }
+                                });
+                                this.salvaSquadre();
+                                this.mostraToast(`✓ Importate ${Object.keys(this.squadre).length} squadre!`, 'success');
+                                this.render();
+                            }
+                        });
+                    })
+                    .catch(err => {
+                        this.mostraToast('Errore import. Verifica che il link sia pubblico.', 'error');
+                        console.error(err);
+                    });
+            },
+
+            importaPartite() {
+                const url = prompt('Link Google Sheets partite (colonne: Campo, Orario, SquadraA, SquadraB):');
+                if (!url) return;
+                
+                let csvUrl = url;
+                if (url.includes('/edit')) {
+                    const sheetId = url.match(/\/d\/([a-zA-Z0-9-_]+)/)[1];
+                    csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
+                }
+                
+                fetch(csvUrl)
+                    .then(r => r.text())
+                    .then(csv => {
+                        Papa.parse(csv, {
+                            header: true,
+                            skipEmptyLines: true,
+                            complete: async (results) => {
+                                let importate = 0;
+                                for (const row of results.data) {
+                                    try {
+                                        const campo = parseInt(row.Campo || row.campo || '1');
+                                        const orario = row.Orario || row.orario || '';
+                                        const squadraA = row.SquadraA || row['Squadra A'] || '';
+                                        const squadraB = row.SquadraB || row['Squadra B'] || '';
+                                        
+                                        if (!squadraA || !squadraB) continue;
+                                        
+                                        await this.aggiungiPartita(campo, orario, squadraA.trim(), squadraB.trim());
+                                        importate++;
+                                        await new Promise(resolve => setTimeout(resolve, 100));
+                                    } catch (error) {
+                                        console.error('Errore riga:', error);
+                                    }
+                                }
+                                this.mostraToast(`✓ Importate ${importate} partite!`, 'success');
+                            }
+                        });
+                    })
+                    .catch(err => {
+                        this.mostraToast('Errore import partite.', 'error');
+                    });
+            },
+
+            calcolaClassifica() {
+                const cls = {};
+                this.partite.filter(p => p.completata).forEach(p => {
+                    [p.squadraA, p.squadraB].forEach((sq, idx) => {
+                        if (!cls[sq]) {
+                            cls[sq] = { nome: sq, punti: 0, giocate: 0, vinte: 0,
+                                pareggiate: 0, perse: 0, golFatti: 0, golSubiti: 0 };
+                        }
+                        const s = cls[sq];
+                        s.giocate++;
+                        if (idx === 0) {
+                            s.punti += p.puntiA;
+                            s.golFatti += p.punteggioA;
+                            s.golSubiti += p.punteggioB;
+                            if (p.punteggioA > p.punteggioB) s.vinte++;
+                            else if (p.punteggioA === p.punteggioB) s.pareggiate++;
+                            else s.perse++;
+                        } else {
+                            s.punti += p.puntiB;
+                            s.golFatti += p.punteggioB;
+                            s.golSubiti += p.punteggioA;
+                            if (p.punteggioB > p.punteggioA) s.vinte++;
+                            else if (p.punteggioA === p.punteggioB) s.pareggiate++;
+                            else s.perse++;
+                        }
+                    });
+                });
+                return Object.values(cls).sort((a, b) => {
+                    if (b.punti !== a.punti) return b.punti - a.punti;
+                    const da = a.golFatti - a.golSubiti;
+                    const db = b.golFatti - b.golSubiti;
+                    if (db !== da) return db - da;
+                    return b.golFatti - a.golFatti;
+                });
+            },
+
+            calcolaStatistiche() {
+                const m = {}, s = {}, v = {}, mvps = {};
+                let totaleGol = 0;
+                let partiteCompletate = 0;
+                let golPrimoTempo = 0;
+                let golSecondoTempo = 0;
+                let partitaPiuGol = null;
+                let maxGolPartita = 0;
+                
+                this.partite.forEach(p => {
+                    if (p.completata) {
+                        partiteCompletate++;
+                        const golTotaliPartita = p.punteggioA + p.punteggioB;
+                        totaleGol += golTotaliPartita;
+                        
+                        if (golTotaliPartita > maxGolPartita) {
+                            maxGolPartita = golTotaliPartita;
+                            partitaPiuGol = p;
+                        }
+                    }
+                    
+                    ['A', 'B'].forEach(sq => {
+                        const nome = p[`squadra${sq}`];
+                        p[`gol${sq}`].forEach(g => {
+                            // Estrai nome senza timestamp per il conteggio
+                            const nomeBase = g.replace(/\s*\(\d+'\)$/, '');
+                            const k = `${nomeBase} (${nome})`;
+                            m[k] = (m[k] || 0) + 1;
+                            
+                            // Calcola gol per tempo
+                            const match = g.match(/\((\d+)'\)$/);
+                            if (match) {
+                                const minuto = parseInt(match[1]);
+                                if (minuto <= 15) golPrimoTempo++;
+                                else golSecondoTempo++;
+                            }
+                        });
+                        p[`scalpi${sq}`].forEach(sc => {
+                            const k = `${sc} (${nome})`;
+                            s[k] = (s[k] || 0) + 1;
+                        });
+                        p[`vuoti${sq}`].forEach(vu => {
+                            const vuBase = vu.replace(/\s*\(\d+'\)$/, '');
+                            const k = `${vuBase} (${nome})`;
+                            v[k] = (v[k] || 0) + 1;
+                        });
+                        if (p[`mvp${sq}`]) {
+                            const k = `${p[`mvp${sq}`]} (${nome})`;
+                            mvps[k] = (mvps[k] || 0) + 1;
+                        }
+                    });
+                });
+                
+                return {
+                    marcatori: Object.entries(m).map(([nome, gol]) => ({ nome, gol })).sort((a, b) => b.gol - a.gol),
+                    scalpiatori: Object.entries(s).map(([nome, scalpi]) => ({ nome, scalpi })).sort((a, b) => b.scalpi - a.scalpi),
+                    vuotatori: Object.entries(v).map(([nome, vuoti]) => ({ nome, vuoti })).sort((a, b) => b.vuoti - a.vuoti),
+                    mvps: Object.entries(mvps).map(([nome, volte]) => ({ nome, volte })).sort((a, b) => b.volte - a.volte),
+                    // Statistiche avanzate
+                    totaleGol,
+                    partiteCompletate,
+                    mediaGolPerPartita: partiteCompletate > 0 ? (totaleGol / partiteCompletate).toFixed(1) : 0,
+                    golPrimoTempo,
+                    golSecondoTempo,
+                    partitaPiuGol,
+                    maxGolPartita
+                };
+            },
+
+            aggiungiElemento(id, squadra, tipo) {
+                const p = this.partite.find(x => x.id === id);
+                const inputId = `${tipo === 'scalpo' ? 'scalpo' : tipo}-${squadra}-${id}`;
+                const input = document.getElementById(inputId);
+                const val = input.tagName === 'SELECT' ? input.value : input.value.trim();
+                
+                if (!val) return;
+                
+                const key = tipo === 'gol' ? `gol${squadra}` : tipo === 'scalpo' ? `scalpi${squadra}` : null;
+                if (!key) return;
+                
+                // Aggiungi timestamp (minuto) per gol
+                const minuto = this.getMinutoPartita(id);
+                const valConTempo = tipo === 'gol' ? `${val} (${minuto}')` : val;
+                
+                const nuovi = [...p[key], valConTempo];
+                const updates = { [key]: nuovi };
+                
+                if (tipo === 'gol') {
+                    updates[`punteggio${squadra}`] = nuovi.length;
+                    // Mostra toast per gol
+                    this.mostraToast(`⚽ GOL! ${val} al ${minuto}'`, 'goal', 4000);
+                    // Vibrazione celebrativa
+                    if ('vibrate' in navigator) {
+                        navigator.vibrate([100, 50, 100, 50, 200]);
+                    }
+                } else if (tipo === 'scalpo') {
+                    this.mostraToast(`🔪 Scalpo: ${val}`, 'info', 2000);
+                }
+                
+                const idx = this.partite.findIndex(x => x.id === id);
+                if (idx !== -1) {
+                    this.partite[idx] = { ...p, ...updates };
+                }
+                
+                this.salvaPartitaAsync(id, updates);
+                input.value = '';
+                this.render();
+            },
+
+            async salvaPartitaAsync(id, updates) {
+                try {
+                    const p = this.partite.find(x => x.id === id);
+                    const u = { ...p, ...updates };
+                    
+                    const dbUpdate = {
+                        squadra_a: u.squadraA, squadra_b: u.squadraB,
+                        gol_a: u.golA, gol_b: u.golB,
+                        scalpi_a: u.scalpiA, scalpi_b: u.scalpiB,
+                        vuoti_a: u.vuotiA, vuoti_b: u.vuotiB,
+                        espulsi_a: u.espulsiA, espulsi_b: u.espulsiB,
+                        punteggio_a: u.punteggioA, punteggio_b: u.punteggioB,
+                        punti_a: u.puntiA, punti_b: u.puntiB,
+                        mvp_a: u.mvpA, mvp_b: u.mvpB,
+                        completata: u.completata
+                    };
+                    
+                    // Aggiungi note se presenti
+                    if ('noteArbitro' in updates) {
+                        dbUpdate.note_arbitro = u.noteArbitro;
+                    }
+                    
+                    await supabase.from('partite').update(dbUpdate).eq('id', id);
+                } catch (error) {
+                    console.error('Errore salvataggio asincrono:', error);
+                    // Salva in offline queue
+                    this.pendingUpdates.push({ id, updates, timestamp: Date.now() });
+                    localStorage.setItem('pending_updates', JSON.stringify(this.pendingUpdates));
+                }
+            },
+
+            rimuoviElemento(id, squadra, tipo, index) {
+                const p = this.partite.find(x => x.id === id);
+                const key = tipo === 'gol' ? `gol${squadra}` : tipo === 'scalpo' ? `scalpi${squadra}` : tipo === 'vuoto' ? `vuoti${squadra}` : null;
+                if (!key) return;
+                
+                const nuovi = [...p[key]];
+                nuovi.splice(index, 1);
+                const updates = { [key]: nuovi };
+                
+                if (tipo === 'gol') {
+                    updates[`punteggio${squadra}`] = nuovi.length;
+                }
+                
+                const idx = this.partite.findIndex(x => x.id === id);
+                if (idx !== -1) {
+                    this.partite[idx] = { ...p, ...updates };
+                }
+                
+                this.salvaPartitaAsync(id, updates);
+                this.render();
+            },
+
+            aggiungiVuotoBtn(id, squadra) {
+                const input = document.getElementById(`vuoto-${squadra}-${id}`);
+                const val = input.tagName === 'SELECT' ? input.value : input.value.trim();
+                
+                if (!val) return;
+                
+                const p = this.partite.find(x => x.id === id);
+                if (p[`espulsi${squadra}`].includes(val)) {
+                    alert('🟥 Giocatore già espulso!');
+                    return;
+                }
+                
+                this.aggiungiVuoto(id, squadra, val);
+                input.value = '';
+            },
+
+async aggiungiVuoto(id, squadra, giocatore) {
+    const p = this.partite.find(x => x.id === id);
+    
+    // Aggiungi timestamp
+    const minuto = this.getMinutoPartita(id);
+    const giocatoreConTempo = `${giocatore} (${minuto}')`;
+    
+    const vuoti = [...p[`vuoti${squadra}`], giocatoreConTempo];
+    const conteggio = vuoti.filter(v => v.startsWith(giocatore.split(' (')[0])).length;
+    
+    // Incrementa contatore vuoti di squadra
+    const vuotiSquadraCampo = `vuotiSquadra${squadra}`;
+    const nuoviVuotiSquadra = p[vuotiSquadraCampo] + 1;
+    
+    let updates = { 
+        [`vuoti${squadra}`]: vuoti,
+        [vuotiSquadraCampo]: nuoviVuotiSquadra
+    };
+    
+    // Toast per vuoto
+    this.mostraToast(`🔵 Vuoto: ${giocatore} (${conteggio}/3)`, conteggio >= 2 ? 'warning' : 'info', 2000);
+    
+    // Espulsione al 3° vuoto personale
+    if (conteggio === 3) {
+        const espulsi = [...p[`espulsi${squadra}`], giocatore];
+        updates[`espulsi${squadra}`] = espulsi;
+        this.mostraToast(`🟥 ESPULSIONE! ${giocatore} - 3 vuoti`, 'error', 5000);
+        if ('vibrate' in navigator) {
+            navigator.vibrate([200, 100, 200, 100, 400]);
+        }
+    }
+    
+    // Fallo di difesa ai vuoti di squadra
+    let messaggioFallo = '';
+    if (nuoviVuotiSquadra === 14 || (nuoviVuotiSquadra > 14 && (nuoviVuotiSquadra - 14) % 3 === 0)) {
+        const nuoviFalli = p[`falliDifesa${squadra}`] + 1;
+        updates[`falliDifesa${squadra}`] = nuoviFalli;
+        
+        // Controlla se è il 3° fallo -> Assegna metà
+        if (nuoviFalli === 3) {
+            const squadraOpposta = squadra === 'A' ? 'B' : 'A';
+            
+            // Azzera falli e assegna metà
+            updates[`falliDifesa${squadra}`] = 0;
+            
+            const golOpposti = [...p[`gol${squadraOpposta}`], 'METÀ (3° Fallo difesa)'];
+            updates[`gol${squadraOpposta}`] = golOpposti;
+            updates[`punteggio${squadraOpposta}`] = golOpposti.length;
+            
+            messaggioFallo = `\n\n⚠️ ${nuoviVuotiSquadra}° VUOTO DI SQUADRA!\n3° FALLO DI DIFESA!\n\nMETÀ assegnata a ${p[`squadra${squadraOpposta}`]}`;
+        } else {
+            messaggioFallo = `\n\n⚠️ ${nuoviVuotiSquadra}° VUOTO DI SQUADRA!\nFallo di difesa assegnato (${nuoviFalli}/3).`;
+        }
+    }
+    
+    const idx = this.partite.findIndex(x => x.id === id);
+    if (idx !== -1) {
+        this.partite[idx] = { ...p, ...updates };
+    }
+    
+    await this.salvaPartitaAsync(id, updates);
+    
+    // Mostra toast invece di alert per i falli
+    if (messaggioFallo) {
+        if (messaggioFallo.includes('METÀ')) {
+            this.mostraToast(`⚠️ 3° FALLO DIFESA - METÀ assegnata!`, 'error', 6000);
+            if ('vibrate' in navigator) {
+                navigator.vibrate([300, 100, 300, 100, 500]);
+            }
+        } else if (messaggioFallo.includes('Fallo di difesa')) {
+            const falliAttuali = messaggioFallo.match(/\((\d)\/3\)/);
+            this.mostraToast(`⚠️ Fallo difesa (${falliAttuali ? falliAttuali[1] : '?'}/3)`, 'warning', 4000);
+        }
+    }
+    
+    this.render();
+},
+          
+            azzeraVuoti(id, squadra) {
+    if (!confirm(`Azzerare i vuoti individuali del 1° tempo?\n\nATTENZIONE: I vuoti di SQUADRA NON verranno azzerati.`)) return;
+    
+    const p = this.partite.find(x => x.id === id);
+    const updates = { 
+        [`vuoti${squadra}`]: [],
+        [`espulsi${squadra}`]: []
+        // NON azzeriamo vuotiSquadraA/B
+    };
+    
+    const idx = this.partite.findIndex(x => x.id === id);
+    if (idx !== -1) {
+        this.partite[idx] = { ...p, ...updates };
+    }
+    
+    this.salvaPartitaAsync(id, updates);
+    this.render();
+},
+
+            rientraEspulso(id, squadra, giocatore) {
+                if (!confirm(`Far rientrare ${giocatore}?`)) return;
+                const p = this.partite.find(x => x.id === id);
+                const espulsi = p[`espulsi${squadra}`].filter(e => e !== giocatore);
+                
+                const updates = { [`espulsi${squadra}`]: espulsi };
+                
+                const idx = this.partite.findIndex(x => x.id === id);
+                if (idx !== -1) {
+                    this.partite[idx] = { ...p, ...updates };
+                }
+                
+                this.salvaPartitaAsync(id, updates);
+                this.render();
+            },
+
+            finalizzaPartitaForm(id) {
+                const p = this.partite.find(x => x.id === id);
+                const giocatoriA = this.squadre[p.squadraA] || [];
+                const giocatoriB = this.squadre[p.squadraB] || [];
+
+                const html = `
+                    <div class="max-w-2xl mx-auto p-4">
+                        <button onclick="app.partitaSelezionata=${id};app.render()" class="mb-6 text-cyan-400 hover:text-cyan-300 flex items-center gap-2 font-semibold">
+                            ← Torna al form
+                        </button>
+
+                        <div class="bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700 mb-6">
+                            <h1 class="text-2xl font-bold mb-2">Finalizza Partita</h1>
+                            <p class="text-gray-400">${p.squadraA} vs ${p.squadraB}</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div class="bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700">
+                                <h2 class="text-xl font-bold text-cyan-300 mb-4">${p.squadraA}</h2>
+                                <label class="block text-sm mb-2 text-gray-300">Seleziona MVP</label>
+                                <select id="mvp-select-a" class="w-full bg-gray-700 border border-gray-600 rounded px-4 py-2 text-white mb-4">
+                                    <option value="">-- Nessun MVP --</option>
+                                    ${giocatoriA.map(g => `<option value="${g.numero} - ${g.nome}">${g.numero} - ${g.nome}</option>`).join('')}
+                                </select>
+                                <div id="preview-a" class="text-sm text-gray-400"></div>
+                            </div>
+
+                            <div class="bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700">
+                                <h2 class="text-xl font-bold text-cyan-300 mb-4">${p.squadraB}</h2>
+                                <label class="block text-sm mb-2 text-gray-300">Seleziona MVP</label>
+                                <select id="mvp-select-b" class="w-full bg-gray-700 border border-gray-600 rounded px-4 py-2 text-white mb-4">
+                                    <option value="">-- Nessun MVP --</option>
+                                    ${giocatoriB.map(g => `<option value="${g.numero} - ${g.nome}">${g.numero} - ${g.nome}</option>`).join('')}
+                                </select>
+                                <div id="preview-b" class="text-sm text-gray-400"></div>
+                            </div>
+                        </div>
+
+                        <button onclick="app.confermaSalvaPartita(${id})" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded text-lg">
+                            ✓ Salva e Finalizza
+                        </button>
+                    </div>
+                `;
+                document.getElementById('app').innerHTML = html;
+
+                const selectA = document.getElementById('mvp-select-a');
+                const selectB = document.getElementById('mvp-select-b');
+                const previewA = document.getElementById('preview-a');
+                const previewB = document.getElementById('preview-b');
+
+                selectA.addEventListener('change', (e) => {
+                    previewA.textContent = e.target.value ? `⭐ ${e.target.value}` : '';
+                });
+
+                selectB.addEventListener('change', (e) => {
+                    previewB.textContent = e.target.value ? `⭐ ${e.target.value}` : '';
+                });
+            },
+
+            async confermaSalvaPartita(id) {
+                const p = this.partite.find(x => x.id === id);
+                const mvpA = document.getElementById('mvp-select-a').value;
+                const mvpB = document.getElementById('mvp-select-b').value;
+                
+                const scoreA = p.golA.length;
+                const scoreB = p.golB.length;
+                let puntiA = 0, puntiB = 0;
+                
+                if (scoreA > scoreB) puntiA = 3;
+                else if (scoreB > scoreA) puntiB = 3;
+                else { puntiA = 1; puntiB = 1; }
+                
+                await this.fermaTimer(id);
+                await this.rilasciaControlloPartita(id);
+                await this.aggiornaPartita(id, { 
+                    punteggioA: scoreA, punteggioB: scoreB, 
+                    puntiA, puntiB, mvpA, mvpB, completata: true 
+                });
+                this.partitaSelezionata = null;
+            },
+
+            render() {
+                if (this.partitaSelezionata) {
+                    this.renderFormPartita();
+                } else {
+                    this.renderMain();
+                }
+            },
+
+            renderMain() {
+                const completate = this.partite.filter(p => p.completata).length;
+                
+                document.getElementById('app').innerHTML = `
+                    <div class="max-w-6xl mx-auto p-4">
+                        <header class="mb-8">
+                            <div class="flex items-center justify-center gap-3 mb-2">
+                                <h1 class="text-3xl font-bold text-cyan-400">24OdG</h1>
+                                <div class="px-3 py-1 rounded-full text-sm ${this.connesso ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'}">
+                                    ${this.connesso ? '🟢 Online' : '🔴 Offline'}
+                                </div>
+                            </div>
+                            <p class="text-center text-gray-400">Partite: ${this.partite.length} | Completate: ${completate} | Squadre: ${Object.keys(this.squadre).length}</p>
+                            <p class="text-center text-cyan-400 text-sm mt-2">👤 ${this.emailUtente}</p>
+                        </header>
+                        
+                        <nav class="flex gap-2 mb-6 overflow-x-auto pb-2">
+                            <button onclick="app.vista='partite';app.render()" class="px-4 py-2 rounded font-semibold whitespace-nowrap ${this.vista === 'partite' ? 'bg-cyan-600 text-white' : 'bg-gray-700 text-gray-300'}">⚽ Partite</button>
+                            <button onclick="app.vista='squadre';app.render()" class="px-4 py-2 rounded font-semibold whitespace-nowrap ${this.vista === 'squadre' ? 'bg-cyan-600 text-white' : 'bg-gray-700 text-gray-300'}">👥 Squadre</button>
+                            <button onclick="app.vista='classifica';app.render()" class="px-4 py-2 rounded font-semibold whitespace-nowrap ${this.vista === 'classifica' ? 'bg-cyan-600 text-white' : 'bg-gray-700 text-gray-300'}">📊 Classifica</button>
+                            <button onclick="app.vista='statistiche';app.render()" class="px-4 py-2 rounded font-semibold whitespace-nowrap ${this.vista === 'statistiche' ? 'bg-cyan-600 text-white' : 'bg-gray-700 text-gray-300'}">📈 Statistiche</button>
+                        </nav>
+                        
+                        <main id="contenuto"></main>
+                    </div>
+                `;
+                
+                if (this.vista === 'partite') this.renderPartite();
+                else if (this.vista === 'squadre') this.renderSquadre();
+                else if (this.vista === 'classifica') this.renderClassifica();
+                else if (this.vista === 'statistiche') this.renderStatistiche();
+            },
+          renderPartite() {
+                const daGiocare = this.partite.filter(p => !p.completata);
+                const completate = this.partite.filter(p => p.completata);
+                const squadreDisponibili = Object.keys(this.squadre).sort();
+                
+                document.getElementById('contenuto').innerHTML = `
+                    <div class="mb-6 flex gap-2 overflow-x-auto pb-2">
+                        <button onclick="app.sottovista='tutte';app.renderPartite()" class="px-4 py-2 rounded font-semibold whitespace-nowrap ${this.sottovista === 'tutte' ? 'bg-cyan-600 text-white' : 'bg-gray-700 text-gray-300'}">Tutte (${this.partite.length})</button>
+                        <button onclick="app.sottovista='da_giocare';app.renderPartite()" class="px-4 py-2 rounded font-semibold whitespace-nowrap ${this.sottovista === 'da_giocare' ? 'bg-cyan-600 text-white' : 'bg-gray-700 text-gray-300'}">Da Giocare (${daGiocare.length})</button>
+                        <button onclick="app.sottovista='completate';app.renderPartite()" class="px-4 py-2 rounded font-semibold whitespace-nowrap ${this.sottovista === 'completate' ? 'bg-cyan-600 text-white' : 'bg-gray-700 text-gray-300'}">Completate (${completate.length})</button>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-xl border border-gray-700">
+                        <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                            <h2 class="text-xl font-semibold text-cyan-400">Nuova Partita</h2>
+                            <button onclick="app.importaPartite()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded font-semibold text-sm">🔥 Import Partite</button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                            <div>
+                                <label class="block text-sm mb-2 text-gray-300">Campo</label>
+                                <select id="campo" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                                    ${[1,2,3,4,5,6,7,8].map(c => `<option value="${c}">${c}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm mb-2 text-gray-300">Orario</label>
+                                <input type="time" id="orario" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                            </div>
+                            <div>
+                                <label class="block text-sm mb-2 text-gray-300">Squadra A</label>
+                                ${squadreDisponibili.length > 0 ? `
+                                    <select id="squadraA" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                                        <option value="">-- Seleziona --</option>
+                                        ${squadreDisponibili.map(s => `<option value="${s}">${s}</option>`).join('')}
+                                    </select>
+                                ` : `
+                                    <input type="text" id="squadraA" placeholder="Nome squadra" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                                `}
+                            </div>
+                            <div>
+                                <label class="block text-sm mb-2 text-gray-300">Squadra B</label>
+                                ${squadreDisponibili.length > 0 ? `
+                                    <select id="squadraB" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                                        <option value="">-- Seleziona --</option>
+                                        ${squadreDisponibili.map(s => `<option value="${s}">${s}</option>`).join('')}
+                                    </select>
+                                ` : `
+                                    <input type="text" id="squadraB" placeholder="Nome squadra" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                                `}
+                            </div>
+                            <div class="flex items-end">
+                                <button onclick="app.handleAggiungiPartita()" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2 px-4 rounded">➕ Aggiungi</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="filtriPartite"></div>
+                    <div id="listaPartite"></div>
+                `;
+                
+                this.renderFiltriPartite();
+                this.renderListaPartite();
+            },
+
+            renderFiltriPartite() {
+                let partiteFiltrate = this.partite;
+                if (this.sottovista === 'da_giocare') partiteFiltrate = this.partite.filter(p => !p.completata);
+                else if (this.sottovista === 'completate') partiteFiltrate = this.partite.filter(p => p.completata);
+                
+                const campi = [...new Set(partiteFiltrate.map(p => p.campo))].sort((a, b) => a - b);
+                const orari = [...new Set(partiteFiltrate.map(p => p.orario).filter(o => o))].sort();
+                
+                document.getElementById('filtriPartite').innerHTML = `
+                    <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-xl border border-gray-700">
+                        <h3 class="text-lg font-semibold text-cyan-400 mb-4">🔍 Filtra Partite</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm mb-2 text-gray-300">Filtra per Campo</label>
+                                <select id="selectFiltroCampo" class="w-full bg-gray-700 border border-gray-600 rounded px-4 py-2 text-white">
+                                    <option value="tutti">Tutti i campi</option>
+                                    ${campi.map(c => `<option value="${c}">Campo ${c}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm mb-2 text-gray-300">Filtra per Orario</label>
+                                <select id="selectFiltroOrario" class="w-full bg-gray-700 border border-gray-600 rounded px-4 py-2 text-white">
+                                    <option value="tutti">Tutti gli orari</option>
+                                    ${orari.map(o => `<option value="${o}">${o}</option>`).join('')}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                const selectCampo = document.getElementById('selectFiltroCampo');
+                const selectOrario = document.getElementById('selectFiltroOrario');
+                
+                if (selectCampo) {
+                    selectCampo.value = this.filtroCampo;
+                    selectCampo.onchange = (e) => {
+                        this.filtroCampo = e.target.value;
+                        this.renderListaPartite();
+                    };
+                }
+                
+                if (selectOrario) {
+                    selectOrario.value = this.filtroOrario;
+                    selectOrario.onchange = (e) => {
+                        this.filtroOrario = e.target.value;
+                        this.renderListaPartite();
+                    };
+                }
+            },
+
+            handleAggiungiPartita() {
+                const campo = parseInt(document.getElementById('campo').value);
+                const orario = document.getElementById('orario').value;
+                const squadraA = document.getElementById('squadraA').value.trim();
+                const squadraB = document.getElementById('squadraB').value.trim();
+                
+                if (!squadraA || !squadraB) {
+                    this.mostraToast('Seleziona entrambe le squadre!', 'error');
+                    return;
+                }
+                
+                this.aggiungiPartita(campo, orario, squadraA, squadraB);
+                document.getElementById('squadraA').value = '';
+                document.getElementById('squadraB').value = '';
+                document.getElementById('orario').value = '';
+            },
+
+            renderListaPartite() {
+                let partite = this.partite;
+                if (this.sottovista === 'da_giocare') partite = partite.filter(p => !p.completata);
+                else if (this.sottovista === 'completate') partite = partite.filter(p => p.completata);
+                
+                if (this.filtroCampo !== 'tutti') {
+                    partite = partite.filter(p => p.campo === parseInt(this.filtroCampo));
+                }
+                if (this.filtroOrario !== 'tutti') {
+                    partite = partite.filter(p => p.orario === this.filtroOrario);
+                }
+                
+                if (partite.length === 0) {
+                    document.getElementById('listaPartite').innerHTML = '<div class="text-center text-gray-500 py-12">Nessuna partita trovata</div>';
+                    return;
+                }
+                
+                const raggruppate = {};
+                partite.forEach(p => {
+                    const key = `${p.orario || 'Senza orario'}_Campo ${p.campo}`;
+                    if (!raggruppate[key]) raggruppate[key] = [];
+                    raggruppate[key].push(p);
+                });
+                
+                document.getElementById('listaPartite').innerHTML = Object.keys(raggruppate).sort().map(key => {
+                    return `
+                        <div class="mb-6">
+                            <div class="bg-gray-700 px-4 py-2 rounded-t-lg font-semibold text-cyan-300">🕐 ${key}</div>
+                            <div class="space-y-3 mt-2">
+                                ${raggruppate[key].map(p => {
+                                    const ora = Date.now();
+                                    const tempoTrascorso = ora - p.arbitroTimestamp;
+                                    const arbitroAttivo = p.arbitroAttivo && tempoTrascorso < TIMEOUT_ARBITRO;
+                                    
+                                    return `
+                                    <div class="bg-gray-800 rounded-lg p-4 shadow-lg border border-gray-700">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <div class="flex-1">
+                                                <div class="text-lg font-bold">
+                                                    <span class="text-cyan-300">${p.squadraA}</span>
+                                                    <span class="text-gray-500 mx-2">vs</span>
+                                                    <span class="text-cyan-300">${p.squadraB}</span>
+                                                </div>
+                                                ${p.completata ? `
+                                                    <div class="text-2xl font-bold text-yellow-400 mt-2">${p.punteggioA} - ${p.punteggioB}</div>
+                                                ` : `
+                                                    <div class="text-sm text-gray-400 mt-2">
+    Gol: ${p.golA.length}-${p.golB.length}
+    ${arbitroAttivo ? ` • <span class="text-orange-400">👤 ${p.arbitroAttivo.split('@')[0]}</span>` : ''}
+</div>
+                                                `}
+                                            </div>
+                                            <div class="flex flex-col gap-2 items-end">
+                                                <span class="px-3 py-1 rounded-full text-sm font-semibold ${
+    p.completata ? 'bg-green-900 text-green-300' : 
+    p.timerAttivo ? 'bg-red-900 text-red-300' : 
+    p.timerSecondi > 0 ? 'bg-yellow-900 text-yellow-300' : 
+    'bg-gray-700 text-gray-300'
+}">
+    ${
+        p.completata ? '✓ Completata' : 
+        p.timerAttivo ? '⏱️ Timer attivo' : 
+        p.timerSecondi > 0 ? '⏸ In pausa' : 
+        '📝 Da iniziare'
+    }
+</span>
+                                                ${p.completata ? `
+                                                    <button onclick="app.generaPDF(${p.id})" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-sm font-semibold">
+                                                        📄 PDF
+                                                    </button>
+                                                ` : ''}
+                                            </div>
+                                        </div>
+                                        ${!p.completata ? `
+                                            <button onclick="app.partitaSelezionata=${p.id};app.sincronizzaTimer();app.render()" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2 px-4 rounded">
+                                                ${arbitroAttivo && p.arbitroAttivo !== app.emailUtente ? '🔒 Apri (in uso)' : '✏️ Gestisci'}
+                                            </button>
+                                        ` : `
+                                            <button onclick="app.partitaSelezionata=${p.id};app.render()" class="w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded">
+                                                👁️ Visualizza
+                                            </button>
+                                        `}
+                                    </div>
+                                `}).join('')}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            },
+
+            renderSquadre() {
+                const lista = Object.keys(this.squadre).sort();
+                document.getElementById('contenuto').innerHTML = `
+                    <div class="bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700">
+                        <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                            <h2 class="text-xl font-semibold text-cyan-400">Gestione Squadre</h2>
+                            <div class="flex gap-2">
+                                <button onclick="app.importaSquadre()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded font-semibold text-sm">🔥 Import</button>
+                                <button onclick="app.aggiungiSquadraManuale()" class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded font-semibold text-sm">➕ Aggiungi</button>
+                            </div>
+                        </div>
+                        ${lista.length === 0 ? '<p class="text-center text-gray-500 py-12">Nessuna squadra</p>' : `
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                ${lista.map(nome => `
+                                    <div class="bg-gray-700 rounded-lg p-4">
+                                        <h3 class="font-bold text-lg text-cyan-300 mb-3">${nome}</h3>
+                                        <div class="space-y-1 max-h-48 overflow-y-auto">
+                                            ${this.squadre[nome].map(g => `
+                                                <div class="text-sm bg-gray-600 rounded px-2 py-1">
+                                                    <span class="font-semibold text-cyan-400">${g.numero}</span> - ${g.nome}
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                        <div class="mt-2 text-xs text-gray-400">${this.squadre[nome].length} giocatori</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `}
+                    </div>
+                `;
+            },
+
+            renderClassifica() {
+                const cls = this.calcolaClassifica();
+                if (cls.length === 0) {
+                    document.getElementById('contenuto').innerHTML = '<p class="text-center text-gray-500 py-12">Nessuna partita completata</p>';
+                    return;
+                }
+                
+                document.getElementById('contenuto').innerHTML = `
+                    <div class="bg-gray-800 rounded-lg shadow-xl border border-gray-700 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-700">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left text-cyan-400 font-semibold">Pos</th>
+                                        <th class="px-4 py-3 text-left text-cyan-400 font-semibold">Squadra</th>
+                                        <th class="px-4 py-3 text-center text-cyan-400 font-semibold">Pt</th>
+                                        <th class="px-4 py-3 text-center text-cyan-400 font-semibold">G</th>
+                                        <th class="px-4 py-3 text-center text-cyan-400 font-semibold">V</th>
+                                        <th class="px-4 py-3 text-center text-cyan-400 font-semibold">N</th>
+                                        <th class="px-4 py-3 text-center text-cyan-400 font-semibold">P</th>
+                                        <th class="px-4 py-3 text-center text-cyan-400 font-semibold">GF</th>
+                                        <th class="px-4 py-3 text-center text-cyan-400 font-semibold">GS</th>
+                                        <th class="px-4 py-3 text-center text-cyan-400 font-semibold">DR</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${cls.map((s, i) => `
+                                        <tr class="border-t border-gray-700 ${i < 3 ? 'bg-green-900 bg-opacity-20' : ''}">
+                                            <td class="px-4 py-3 font-bold ${i === 0 ? 'text-yellow-400' : i === 1 ? 'text-gray-300' : i === 2 ? 'text-orange-400' : 'text-gray-400'}">${i + 1}</td>
+                                            <td class="px-4 py-3 font-semibold">${s.nome}</td>
+                                            <td class="px-4 py-3 text-center font-bold text-cyan-400">${s.punti}</td>
+                                            <td class="px-4 py-3 text-center">${s.giocate}</td>
+                                            <td class="px-4 py-3 text-center text-green-400">${s.vinte}</td>
+                                            <td class="px-4 py-3 text-center text-yellow-400">${s.pareggiate}</td>
+                                            <td class="px-4 py-3 text-center text-red-400">${s.perse}</td>
+                                            <td class="px-4 py-3 text-center">${s.golFatti}</td>
+                                            <td class="px-4 py-3 text-center">${s.golSubiti}</td>
+                                            <td class="px-4 py-3 text-center font-semibold ${s.golFatti - s.golSubiti > 0 ? 'text-green-400' : s.golFatti - s.golSubiti < 0 ? 'text-red-400' : ''}">${s.golFatti - s.golSubiti > 0 ? '+' : ''}${s.golFatti - s.golSubiti}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            },
+
+renderStatistiche() {
+    const stats = this.calcolaStatistiche();
+    const renderLista = (titolo, emoji, lista, colorBg) => {
+        if (lista.length === 0) return `<p class="text-gray-500">Nessun dato</p>`;
+        return `
+            <div class="space-y-2 max-h-96 overflow-y-auto">
+                ${lista.slice(0, 10).map((item, i) => `
+                    <div class="flex justify-between items-center bg-gray-700 rounded px-4 py-3">
+                        <div class="flex items-center gap-3">
+                            <span class="font-bold ${i === 0 ? 'text-yellow-400 text-lg' : i === 1 ? 'text-gray-300' : i === 2 ? 'text-orange-400' : 'text-gray-400'}">${i + 1}</span>
+                            <span class="text-white text-sm">${item.nome}</span>
+                        </div>
+                        <span class="${colorBg} px-3 py-1 rounded-full font-bold text-sm">${item.gol || item.scalpi || item.vuoti || item.volte}${item.volte ? 'x' : ''}</span>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    };
+    
+    // Calcola percentuale gol per tempo
+    const totGolConTempo = stats.golPrimoTempo + stats.golSecondoTempo;
+    const percPrimoTempo = totGolConTempo > 0 ? Math.round((stats.golPrimoTempo / totGolConTempo) * 100) : 50;
+    const percSecondoTempo = totGolConTempo > 0 ? Math.round((stats.golSecondoTempo / totGolConTempo) * 100) : 50;
+    
+    document.getElementById('contenuto').innerHTML = `
+        <!-- Statistiche Generali -->
+        <div class="bg-gradient-to-r from-cyan-900 to-blue-900 rounded-lg p-6 shadow-xl border border-cyan-700 mb-6">
+            <h2 class="text-xl font-bold mb-4 text-white">📊 Statistiche Torneo</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-black bg-opacity-30 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-bold text-cyan-400">${stats.totaleGol}</div>
+                    <div class="text-sm text-gray-300">Gol Totali</div>
+                </div>
+                <div class="bg-black bg-opacity-30 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-bold text-green-400">${stats.partiteCompletate}</div>
+                    <div class="text-sm text-gray-300">Partite Giocate</div>
+                </div>
+                <div class="bg-black bg-opacity-30 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-bold text-yellow-400">${stats.mediaGolPerPartita}</div>
+                    <div class="text-sm text-gray-300">Media Gol/Partita</div>
+                </div>
+                <div class="bg-black bg-opacity-30 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-bold text-purple-400">${stats.marcatori.length > 0 ? stats.marcatori[0].gol : 0}</div>
+                    <div class="text-sm text-gray-300">Capocannoniere</div>
+                </div>
+            </div>
+            
+            ${stats.partitaPiuGol ? `
+            <div class="mt-4 bg-black bg-opacity-30 rounded-lg p-4">
+                <div class="text-sm text-gray-400 mb-1">🏆 Partita più spettacolare</div>
+                <div class="text-lg text-white font-semibold">${stats.partitaPiuGol.squadraA} ${stats.partitaPiuGol.punteggioA} - ${stats.partitaPiuGol.punteggioB} ${stats.partitaPiuGol.squadraB}</div>
+                <div class="text-sm text-cyan-400">${stats.maxGolPartita} gol totali</div>
+            </div>
+            ` : ''}
+            
+            <!-- Distribuzione gol per tempo -->
+            ${totGolConTempo > 0 ? `
+            <div class="mt-4 bg-black bg-opacity-30 rounded-lg p-4">
+                <div class="text-sm text-gray-400 mb-2">⏱️ Distribuzione Gol per Tempo</div>
+                <div class="flex gap-2 items-center">
+                    <div class="flex-1">
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="text-cyan-400">1° Tempo</span>
+                            <span class="text-cyan-400">${stats.golPrimoTempo} (${percPrimoTempo}%)</span>
+                        </div>
+                        <div class="h-3 bg-gray-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-cyan-500 rounded-full" style="width: ${percPrimoTempo}%"></div>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="text-orange-400">2° Tempo</span>
+                            <span class="text-orange-400">${stats.golSecondoTempo} (${percSecondoTempo}%)</span>
+                        </div>
+                        <div class="h-3 bg-gray-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-orange-500 rounded-full" style="width: ${percSecondoTempo}%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ` : ''}
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700">
+                <h2 class="text-xl font-semibold mb-4 text-cyan-400">⚽ Top 10 Marcatori</h2>
+                ${renderLista('Marcatori', '⚽', stats.marcatori, 'bg-cyan-900 text-cyan-300')}
+            </div>
+            <div class="bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700">
+                <h2 class="text-xl font-semibold mb-4 text-red-400">🔪 Top 10 Scalpi</h2>
+                ${renderLista('Scalpi', '🔪', stats.scalpiatori, 'bg-red-900 text-red-300')}
+            </div>
+            <div class="bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700">
+                <h2 class="text-xl font-semibold mb-4 text-blue-400">🔵 Top 10 Vuoti (ammonizioni)</h2>
+                ${renderLista('Vuoti', '🔵', stats.vuotatori, 'bg-blue-900 text-blue-300')}
+            </div>
+            <div class="bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700">
+                <h2 class="text-xl font-semibold mb-4 text-purple-400">⭐ MVP (${stats.mvps.length})</h2>
+                ${renderLista('MVP', '⭐', stats.mvps, 'bg-purple-900 text-purple-300')}
+            </div>
+        </div>
+                `;
+            },
+
+            renderFormPartita() {
+                const p = this.partite.find(x => x.id === this.partitaSelezionata);
+                if (!p) return;
+
+                const giocatoriA = this.squadre[p.squadraA] || [];
+                const giocatoriB = this.squadre[p.squadraB] || [];
+                
+                let secondiMostrati = p.timerSecondi;
+                if (p.timerAttivo) {
+                    const ora = Date.now();
+                    const elapsed = Math.floor((ora - p.timerTimestamp) / 1000);
+                    secondiMostrati = p.timerSecondi + elapsed;
+                }
+                const tempoDurante = this.formatoTempo(secondiMostrati);
+
+                const recupero = p.timerTempo === 1 ? p.recupero1Tempo : p.recupero2Tempo;
+                const tempoTotale = 900 + (recupero * 60);
+                const percentuale = Math.min((secondiMostrati / tempoTotale) * 100, 100);
+
+                const vuotiPerGiocatoreA = {};
+                const vuotiPerGiocatoreB = {};
+                p.vuotiA.forEach(v => vuotiPerGiocatoreA[v] = (vuotiPerGiocatoreA[v] || 0) + 1);
+                p.vuotiB.forEach(v => vuotiPerGiocatoreB[v] = (vuotiPerGiocatoreB[v] || 0) + 1);
+
+                const html = `
+                    <div class="max-w-6xl mx-auto p-4">
+                        <button onclick="app.partitaSelezionata=null;app.rilasciaControlloPartita(${p.id});if(app.timerInterval)clearInterval(app.timerInterval);app.render()" class="mb-6 text-cyan-400 hover:text-cyan-300 flex items-center gap-2 font-semibold">
+                            ← Torna alla lista
+                        </button>
+
+                        <div class="bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700 mb-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <div>
+                                    <h1 class="text-2xl font-bold">Campo ${p.campo} • ${p.orario}</h1>
+                                    <p class="text-gray-400 mt-1">${p.squadraA} vs ${p.squadraB}</p>
+                                </div>
+                                <div class="text-right">
+                                    ${p.completata ? `
+                                        <div class="text-3xl font-bold text-yellow-400">${p.punteggioA} - ${p.punteggioB}</div>
+                                        <span class="text-green-300 text-sm">✓ Completata</span>
+                                    ` : `
+                                        <div class="bg-gray-700 rounded-lg p-4 text-center">
+                                            <div id="timer-display" class="text-4xl font-bold ${p.timerAttivo ? 'text-red-400 timer-active' : 'text-cyan-400'} mb-2 font-mono">${tempoDurante}</div>
+                                            <div id="tempo-display" class="text-sm text-gray-300 mb-1">Tempo ${p.timerTempo}/2</div>
+                                            <div id="recupero-display" class="text-xs text-orange-400 font-bold mb-3 ${secondiMostrati > 900 ? '' : 'hidden'}">+${Math.floor((secondiMostrati - 900) / 60) + 1}'</div>
+                                            
+                                            <div class="w-full bg-gray-600 rounded-full h-2 mb-3">
+                                                <div id="progress-bar" class="progress-bar h-full ${percentuale > 90 ? 'bg-red-500' : percentuale > 75 ? 'bg-orange-500' : 'bg-cyan-500'} rounded-full" style="width: ${percentuale}%"></div>
+                                            </div>
+                                            
+                                            <div class="flex gap-2 mb-2">
+                                                ${!p.timerAttivo ? `
+                                                    <button onclick="app.avviaTimer(${p.id})" class="flex-1 bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded font-semibold text-sm">▶ ${p.timerSecondi > 0 ? 'Riprendi' : 'Avvia'}</button>
+                                                ` : `
+                                                    <button onclick="app.pausaTimer(${p.id})" class="flex-1 bg-orange-600 hover:bg-orange-700 text-white px-3 py-2 rounded font-semibold text-sm">⏸ Pausa</button>
+                                                `}
+                                                ${p.timerSecondi > 0 || p.timerAttivo ? `
+                                                    <button onclick="app.fermaTimer(${p.id})" class="flex-1 bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded font-semibold text-sm">⏹ Reset</button>
+                                                ` : ''}
+                                            </div>
+                                            
+                                            <div class="flex gap-2">
+                                                <button onclick="app.aggiungiRecupero(${p.id}, 1)" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-xs">+1' rec</button>
+                                                <button onclick="app.aggiungiRecupero(${p.id}, 2)" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-xs">+2' rec</button>
+                                                <button onclick="app.aggiungiRecupero(${p.id}, 3)" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-xs">+3' rec</button>
+                                            </div>
+                                            ${recupero > 0 ? `<div class="text-xs text-gray-400 mt-2">Recupero: ${recupero}'</div>` : ''}
+                                        </div>
+                                    `}
+                                </div>
+                            </div>
+                        </div>
+
+                        ${!p.completata ? `
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                ${this.renderSezioneSegnata(p, 'A', giocatoriA, vuotiPerGiocatoreA)}
+                                ${this.renderSezioneSegnata(p, 'B', giocatoriB, vuotiPerGiocatoreB)}
+                            </div>
+
+                            <!-- Note Arbitro -->
+                            <div class="bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700 mb-6">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="text-xl">📝</span>
+                                    <h3 class="text-lg font-semibold text-cyan-400">Note Arbitro</h3>
+                                </div>
+                                <textarea 
+                                    id="note-arbitro-${p.id}" 
+                                    placeholder="Annotazioni sulla partita (incidenti, decisioni particolari, etc.)"
+                                    class="w-full bg-gray-700 border border-gray-600 rounded px-4 py-3 text-white text-sm focus:border-cyan-500 focus:outline-none resize-none"
+                                    rows="3"
+                                    onchange="app.salvaNote(${p.id})"
+                                >${p.noteArbitro || ''}</textarea>
+                                <p class="text-xs text-gray-500 mt-2">Le note vengono salvate automaticamente</p>
+                            </div>
+
+                            <div class="bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700">
+                                <button onclick="app.finalizzaPartitaForm(${p.id})" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded text-lg">
+                                    🏁 Finalizza Partita
+                                </button>
+                            </div>
+                        ` : `
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                ${this.renderRiepilogo(p, 'A')}
+                                ${this.renderRiepilogo(p, 'B')}
+                            </div>
+                            
+                            ${p.noteArbitro ? `
+                            <div class="bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700 mb-6">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="text-xl">📝</span>
+                                    <h3 class="text-lg font-semibold text-cyan-400">Note Arbitro</h3>
+                                </div>
+                                <p class="text-gray-300 text-sm whitespace-pre-wrap">${p.noteArbitro}</p>
+                            </div>
+                            ` : ''}
+                            
+                            <div class="text-center">
+                                <button onclick="app.generaPDF(${p.id})" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded text-lg">
+                                    📄 Scarica Referto PDF
+                                </button>
+                            </div>
+                        `}
+                    </div>
+                `;
+                document.getElementById('app').innerHTML = html;
+            },
+
+            renderSezioneSegnata(p, squadra, giocatori, vuotiPerGiocatore) {
+                const nome = p[`squadra${squadra}`];
+                const gol = p[`gol${squadra}`];
+                const scalpi = p[`scalpi${squadra}`];
+                const vuoti = p[`vuoti${squadra}`];
+                const espulsi = p[`espulsi${squadra}`];
+                const punteggio = p[`punteggio${squadra}`];
+
+                return `
+                    <div class="bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-cyan-300">${nome}</h2>
+                            <div class="text-4xl font-bold text-yellow-400">${punteggio}</div>
+                        </div>
+
+                        ${espulsi.length > 0 ? `
+                            <div class="mb-6 bg-red-900 bg-opacity-30 border border-red-700 rounded-lg p-4">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="text-red-400 text-xl">🟥</span>
+                                    <span class="font-bold text-red-300">Espulsi (${espulsi.length})</span>
+                                </div>
+                                <div class="space-y-2">
+                                    ${espulsi.map(e => `
+                                        <div class="bg-red-900 bg-opacity-40 rounded px-3 py-2 flex justify-between items-center">
+                                            <span class="text-red-200">${e}</span>
+                                            <button onclick="app.rientraEspulso(${p.id}, '${squadra}', '${e}')" class="text-green-400 hover:text-green-300 text-xs font-semibold">Rientra</button>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        <div class="mb-6">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="text-yellow-400 text-xl">⚽</span>
+                                <span class="font-bold text-gray-200">Gol (${gol.length})</span>
+                            </div>
+                            <div class="flex gap-2 mb-3">
+                                ${giocatori.length > 0 ? `
+                                    <select id="gol-${squadra}-${p.id}" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                                        <option value="">-- Seleziona --</option>
+                                        ${giocatori.map(g => `<option value="${g.numero} - ${g.nome}">${g.numero} - ${g.nome}</option>`).join('')}
+                                    </select>
+                                ` : `
+                                    <input type="text" id="gol-${squadra}-${p.id}" placeholder="Nome" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                                `}
+                                <button onclick="app.aggiungiElemento(${p.id}, '${squadra}', 'gol')" class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded font-bold">+</button>
+                            </div>
+                            <div class="space-y-2 max-h-32 overflow-y-auto">
+                                ${gol.map((g, i) => `
+                                    <div class="bg-gray-700 rounded px-3 py-2 flex justify-between items-center text-sm">
+                                        <span>⚽ ${g}</span>
+                                        <button onclick="app.rimuoviElemento(${p.id}, '${squadra}', 'gol', ${i})" class="text-red-400 hover:text-red-300">✕</button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="text-red-400 text-xl">🔪</span>
+                                <span class="font-bold text-gray-200">Scalpi (${scalpi.length})</span>
+                            </div>
+                            <div class="flex gap-2 mb-3">
+                                ${giocatori.length > 0 ? `
+                                    <select id="scalpo-${squadra}-${p.id}" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                                        <option value="">-- Seleziona --</option>
+                                        ${giocatori.map(g => `<option value="${g.numero} - ${g.nome}">${g.numero} - ${g.nome}</option>`).join('')}
+                                    </select>
+                                ` : `
+                                    <input type="text" id="scalpo-${squadra}-${p.id}" placeholder="Nome" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                                `}
+                                <button onclick="app.aggiungiElemento(${p.id}, '${squadra}', 'scalpo')" class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded font-bold">+</button>
+                            </div>
+                            <div class="space-y-2 max-h-32 overflow-y-auto">
+                                ${scalpi.map((s, i) => `
+                                    <div class="bg-gray-700 rounded px-3 py-2 flex justify-between items-center text-sm">
+                                        <span>🔪 ${s}</span>
+                                        <button onclick="app.rimuoviElemento(${p.id}, '${squadra}', 'scalpo', ${i})" class="text-red-400 hover:text-red-300">✕</button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-2">
+    <span class="text-blue-400 text-xl">🔵</span>
+    <span class="font-bold text-gray-200">Vuoti Individuali (${vuoti.length})</span>
+    <span class="ml-2 text-sm ${p[`vuotiSquadra${squadra}`] >= 14 ? 'text-orange-400' : 'text-gray-400'}">
+        | Squadra: ${p[`vuotiSquadra${squadra}`]}
+        ${p[`vuotiSquadra${squadra}`] >= 14 ? ` (${Math.floor((p[`vuotiSquadra${squadra}`] - 14) / 3) + 1} falli)` : ` (${14 - p[`vuotiSquadra${squadra}`]} al fallo)`}
+    </span>
+</div>
+                                ${vuoti.length > 0 ? `
+                                    <button onclick="app.azzeraVuoti(${p.id}, '${squadra}')" class="text-xs bg-orange-600 hover:bg-orange-700 text-white px-2 py-1 rounded">Azzera 1°T</button>
+                                ` : ''}
+                            </div>
+                            <div class="flex gap-2 mb-3">
+                                ${giocatori.length > 0 ? `
+                                    <select id="vuoto-${squadra}-${p.id}" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                                        <option value="">-- Seleziona --</option>
+                                        ${giocatori.map(g => {
+                                            const gNome = `${g.numero} - ${g.nome}`;
+                                            const cnt = vuotiPerGiocatore[gNome] || 0;
+                                            const isEspulso = espulsi.includes(gNome);
+                                            return `<option value="${gNome}" ${isEspulso ? 'disabled' : ''}>${gNome}${cnt > 0 ? ` (${cnt})` : ''}${isEspulso ? ' [ESP]' : ''}</option>`;
+                                        }).join('')}
+                                    </select>
+                                ` : `
+                                    <input type="text" id="vuoto-${squadra}-${p.id}" placeholder="Nome" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                                `}
+                                <button onclick="app.aggiungiVuotoBtn(${p.id}, '${squadra}')" class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded font-bold">+</button>
+                            </div>
+                            <div class="space-y-2 max-h-32 overflow-y-auto">
+                                ${vuoti.map((v, i) => {
+                                    const cnt = vuotiPerGiocatore[v];
+                                    return `
+                                        <div class="bg-gray-700 rounded px-3 py-2 flex justify-between items-center text-sm ${cnt >= 3 ? 'border-2 border-red-500 bg-red-900 bg-opacity-30' : ''}">
+                                            <span>🔵 ${v} ${cnt >= 2 ? `<span class="text-orange-400 font-bold">(${cnt}/3)</span>` : ''}</span>
+                                            <button onclick="app.rimuoviElemento(${p.id}, '${squadra}', 'vuoto', ${i})" class="text-red-400 hover:text-red-300">✕</button>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+    <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+            <span class="text-orange-400 text-xl">⚠️</span>
+            <span class="font-bold text-gray-200">Falli di Difesa</span>
+        </div>
+        <div class="text-2xl font-bold ${p[`falliDifesa${squadra}`] >= 2 ? 'text-red-400' : 'text-orange-400'}">
+            ${p[`falliDifesa${squadra}`]}/3
+        </div>
+    </div>
+    <button onclick="app.aggiungiFalloDifesa(${p.id}, '${squadra}')" class="w-full bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded font-bold">
+        + Aggiungi Fallo
+    </button>
+    ${p[`falliDifesa${squadra}`] >= 2 ? '<p class="text-xs text-red-400 mt-2 text-center">⚠️ Attenzione! Prossimo fallo = metà</p>' : ''}
+</div>
+                    </div>
+                `;
+            },
+
+            renderRiepilogo(p, squadra) {
+                const nome = p[`squadra${squadra}`];
+                const gol = p[`gol${squadra}`];
+                const scalpi = p[`scalpi${squadra}`];
+                const punteggio = p[`punteggio${squadra}`];
+                const mvp = p[`mvp${squadra}`];
+
+                return `
+                    <div class="bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700">
+                        <h2 class="text-2xl font-bold text-cyan-300 mb-4">${nome}</h2>
+                        <div class="text-4xl font-bold text-yellow-400 mb-6">${punteggio}</div>
+                        
+                        <div class="mb-6">
+                            <div class="text-sm text-gray-400 mb-2">Gol: ${gol.length}</div>
+                            <div class="bg-gray-700 rounded p-4 text-sm space-y-2">
+                                ${gol.length > 0 ? gol.map(g => `<div class="text-cyan-300">⚽ ${g}</div>`).join('') : '<div class="text-gray-500">Nessun gol</div>'}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <div class="text-sm text-gray-400 mb-2">Scalpi: ${scalpi.length}</div>
+                            <div class="bg-gray-700 rounded p-4 text-sm space-y-2">
+                                ${scalpi.length > 0 ? scalpi.map(s => `<div class="text-red-300">🔪 ${s}</div>`).join('') : '<div class="text-gray-500">Nessuno scalpo</div>'}
+                            </div>
+                        </div>
+
+                        ${mvp ? `
+                            <div class="bg-purple-900 bg-opacity-40 border border-purple-700 rounded-lg p-4">
+                                <div class="text-sm text-gray-400 mb-1">MVP</div>
+                                <div class="text-lg font-bold text-purple-300">⭐ ${mvp}</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            app.init();
+            
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(() => console.log('✓ PWA pronta'))
+                    .catch(err => console.log('Service Worker:', err));
+            }
+        });
+    </script>
+
+
+</body></html>
