@@ -876,35 +876,41 @@ async aggiungiFalloDifesa(id, squadra) {
             },
 
             calcolaStatistiche() {
-                const m = {}, s = {}, v = {}, mvps = {};
-                this.partite.forEach(p => {
-                    ['A', 'B'].forEach(sq => {
-                        const nome = p[`squadra${sq}`];
-                        p[`gol${sq}`].forEach(g => {
-                            const k = `${g} (${nome})`;
-                            m[k] = (m[k] || 0) + 1;
-                        });
-                        p[`scalpi${sq}`].forEach(sc => {
-                            const k = `${sc} (${nome})`;
-                            s[k] = (s[k] || 0) + 1;
-                        });
-                        p[`vuoti${sq}`].forEach(vu => {
-                            const k = `${vu} (${nome})`;
-                            v[k] = (v[k] || 0) + 1;
-                        });
-                        if (p[`mvp${sq}`]) {
-                            const k = `${p[`mvp${sq}`]} (${nome})`;
-                            mvps[k] = (mvps[k] || 0) + 1;
-                        }
-                    });
-                });
-                return {
-                    marcatori: Object.entries(m).map(([nome, gol]) => ({ nome, gol })).sort((a, b) => b.gol - a.gol),
-                    scalpiatori: Object.entries(s).map(([nome, scalpi]) => ({ nome, scalpi })).sort((a, b) => b.scalpi - a.scalpi),
-                    vuotatori: Object.entries(v).map(([nome, vuoti]) => ({ nome, vuoti })).sort((a, b) => b.vuoti - a.vuoti),
-                    mvps: Object.entries(mvps).map(([nome, volte]) => ({ nome, volte })).sort((a, b) => b.volte - a.volte)
-                };
-            },
+    const m = {}, s = {}, v = {}, mvps = {};
+    this.partite.forEach(p => {
+        ['A', 'B'].forEach(sq => {
+            const nome = p[`squadra${sq}`];
+            
+            // Filtra i gol escludendo le metà tecniche
+            p[`gol${sq}`].forEach(g => {
+                // Escludi gol che contengono "METÀ" (sono metà tecniche)
+                if (!g.includes('METÀ') && !g.includes('META\'')) {
+                    const k = `${g} (${nome})`;
+                    m[k] = (m[k] || 0) + 1;
+                }
+            });
+            
+            p[`scalpi${sq}`].forEach(sc => {
+                const k = `${sc} (${nome})`;
+                s[k] = (s[k] || 0) + 1;
+            });
+            p[`vuoti${sq}`].forEach(vu => {
+                const k = `${vu} (${nome})`;
+                v[k] = (v[k] || 0) + 1;
+            });
+            if (p[`mvp${sq}`]) {
+                const k = `${p[`mvp${sq}`]} (${nome})`;
+                mvps[k] = (mvps[k] || 0) + 1;
+            }
+        });
+    });
+    return {
+        marcatori: Object.entries(m).map(([nome, gol]) => ({ nome, gol })).sort((a, b) => b.gol - a.gol),
+        scalpiatori: Object.entries(s).map(([nome, scalpi]) => ({ nome, scalpi })).sort((a, b) => b.scalpi - a.scalpi),
+        vuotatori: Object.entries(v).map(([nome, vuoti]) => ({ nome, vuoti })).sort((a, b) => b.vuoti - a.vuoti),
+        mvps: Object.entries(mvps).map(([nome, volte]) => ({ nome, volte })).sort((a, b) => b.volte - a.volte)
+    };
+},
 
             aggiungiElemento(id, squadra, tipo) {
                 const p = this.partite.find(x => x.id === id);
