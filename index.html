@@ -129,7 +129,7 @@ async caricaArbitri() {
                 `;
             },
 
-            async effettuaLogin(event) {
+async effettuaLogin(event) {
     event.preventDefault();
     const email = document.getElementById('email-input').value.trim();
     
@@ -145,8 +145,9 @@ async caricaArbitri() {
     this.emailUtente = email;
     localStorage.setItem('arbitro_email', email);
     
-    this.caricaSquadre();
-    this.caricaPartite();
+    // ASPETTA che i dati vengano caricati prima di renderizzare
+    await this.caricaSquadre();
+    await this.caricaPartite();
     this.sottoscrivi();
     this.render();
 },
