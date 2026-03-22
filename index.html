@@ -48,14 +48,7 @@
         const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
         window.supabase = supabase;
 
-        const ARBITRI_AUTORIZZATI = [
-            'stepengo@gmail.com',
-            'frafuma02@gmail.com',
-            'sebmorandi23@gmail.com',
-            'Silviarada04@gmail.com',
-            'arbitro4@24odg.it',
-            'arbitro5@24odg.it',
-        ];
+
 
         const TIMEOUT_ARBITRO = 30000; // 30 secondi
 
@@ -73,19 +66,38 @@
             utenteAutenticato: null,
             emailUtente: '',
 
-            async init() {
-                const emailSalvata = localStorage.getItem('arbitro_email');
-                if (emailSalvata && ARBITRI_AUTORIZZATI.includes(emailSalvata)) {
-                    this.utenteAutenticato = emailSalvata;
-                    this.emailUtente = emailSalvata;
-                    await this.caricaSquadre();
-                    await this.caricaPartite();
-                    this.sottoscrivi();
-                    this.render();
-                } else {
-                    this.renderLogin();
-                }
-            },
+async init() {
+    // Carica lista arbitri autorizzati dal database
+    const arbitriAutorizzati = await this.caricaArbitri();
+    
+    const emailSalvata = localStorage.getItem('arbitro_email');
+    if (emailSalvata && arbitriAutorizzati.includes(emailSalvata)) {
+        this.utenteAutenticato = emailSalvata;
+        this.emailUtente = emailSalvata;
+        await this.caricaSquadre();
+        await this.caricaPartite();
+        this.sottoscrivi();
+        this.render();
+    } else {
+        this.renderLogin();
+    }
+},
+
+async caricaArbitri() {
+    try {
+        const { data, error } = await supabase
+            .from('arbitri')
+            .select('email')
+            .eq('attivo', true);
+        
+        if (error) throw error;
+        
+        return data.map(a => a.email);
+    } catch (error) {
+        console.error('Errore caricamento arbitri:', error);
+        return [];
+    }
+},
 
             renderLogin() {
                 document.getElementById('app').innerHTML = `
@@ -117,24 +129,27 @@
                 `;
             },
 
-            effettuaLogin(event) {
-                event.preventDefault();
-                const email = document.getElementById('email-input').value.trim();
-                
-                if (!ARBITRI_AUTORIZZATI.includes(email)) {
-                    alert('❌ Email non autorizzata. Contatta l\'amministratore.');
-                    return;
-                }
-                
-                this.utenteAutenticato = email;
-                this.emailUtente = email;
-                localStorage.setItem('arbitro_email', email);
-                
-                this.caricaSquadre();
-                this.caricaPartite();
-                this.sottoscrivi();
-                this.render();
-            },
+            async effettuaLogin(event) {
+    event.preventDefault();
+    const email = document.getElementById('email-input').value.trim();
+    
+    // Verifica se l'email è autorizzata nel database
+    const arbitriAutorizzati = await this.caricaArbitri();
+    
+    if (!arbitriAutorizzati.includes(email)) {
+        alert('❌ Email non autorizzata. Contatta l\'amministratore.');
+        return;
+    }
+    
+    this.utenteAutenticato = email;
+    this.emailUtente = email;
+    localStorage.setItem('arbitro_email', email);
+    
+    this.caricaSquadre();
+    this.caricaPartite();
+    this.sottoscrivi();
+    this.render();
+},
 
             logout() {
                 if (!confirm('Vuoi effettuare il logout?')) return;
