@@ -343,7 +343,7 @@ sottoscrivi() {
                             falliDifesaA: nuovi.falli_difesa_a || 0,
                             falliDifesaB: nuovi.falli_difesa_b || 0,
                             vuotiSquadraA: nuovi.vuoti_squadra_a || 0,
-                            vuotiSquadraB: nuovi.vuoti_squadra_b || 0
+                            vuotiSquadraB: nuovi.vuoti_squadra_b || 0,
                             cartelliniA: nuovi.cartellini_a || [],
                             cartelliniB: nuovi.cartellini_b || [],
                         };
@@ -511,7 +511,7 @@ async apriPartita(id) {
                         recupero_1tempo: 0, recupero_2tempo: 0,
                         arbitro_attivo: '', arbitro_timestamp: 0,
                         falli_difesa_a: 0, falli_difesa_b: 0,
-                        vuoti_squadra_a: 0, vuoti_squadra_b: 0
+                        vuoti_squadra_a: 0, vuoti_squadra_b: 0,
                         cartellini_a: [], cartellini_b: [],
                     }]);
                     if (error) throw error;
@@ -547,7 +547,7 @@ async apriPartita(id) {
                     if ('falliDifesaB' in updates) dbUpdates.falli_difesa_b = u.falliDifesaB;
                     if ('vuotiSquadraA' in updates) dbUpdates.vuoti_squadra_a = u.vuotiSquadraA;
 							      if ('vuotiSquadraB' in updates) dbUpdates.vuoti_squadra_b = u.vuotiSquadraB;
-                    if ('cartelliniA' in updates) dbUpdates.cartellini_a = u.cartelliniA;
+							      if ('cartelliniA' in updates) dbUpdates.cartellini_a = u.cartelliniA;
                     if ('cartelliniB' in updates) dbUpdates.cartellini_b = u.cartelliniB;
                     
                     const { error } = await supabase.from('partite').update(dbUpdates).eq('id', id);
@@ -636,7 +636,7 @@ async apriPartita(id) {
                 }
             },
 
-async passaAlSecondoTempoManuale(id) {
+            async passaAlSecondoTempoManuale(id) {
     if (!confirm('⏭ Passare al 2° tempo?\n\nI vuoti individuali verranno azzerati e gli espulsi rientreranno.\nI giocatori con cartellino giallo del 1° tempo potranno rientrare.')) return;
 
     if (this.timerInterval) {
@@ -669,7 +669,7 @@ async passaAlSecondoTempoManuale(id) {
     });
 },
 
-async aggiungiCartellino(id, squadra, giocatore, tipo) {
+            async aggiungiCartellino(id, squadra, giocatore, tipo) {
     const p = this.partite.find(x => x.id === id);
     if (!p) return;
 
@@ -924,22 +924,8 @@ generaPDF(id) {
         });
         yA += 3;
     }
-if (p.cartelliniA.length > 0) {
-    yA = nuovaPaginaSeNecessario(yA);
-    doc.setFont(undefined, 'bold');
-    doc.text(`Cartellini (${p.cartelliniA.length}):`, 20, yA);
-    doc.setFont(undefined, 'normal');
-    yA += 7;
-    p.cartelliniA.forEach(c => {
-        yA = nuovaPaginaSeNecessario(yA);
-        const simbolo = c.tipo === 'giallo' ? '[G]' : c.tipo === 'rosso' ? '[R]' : '[N]';
-        doc.text(`${simbolo} ${c.giocatore}`, 25, yA);
-        yA += 6;
-    });
-    yA += 3;
-}
 
-if (p.cartelliniA.length > 0) {
+    if (p.cartelliniA.length > 0) {
     yA = nuovaPaginaSeNecessario(yA);
     doc.setFont(undefined, 'bold');
     doc.text(`Cartellini (${p.cartelliniA.length}):`, 20, yA);
@@ -1017,8 +1003,7 @@ if (p.cartelliniA.length > 0) {
         yB += 3;
     }
 
-
-if (p.cartelliniB.length > 0) {
+    if (p.cartelliniB.length > 0) {
     yB = nuovaPaginaSeNecessario(yB);
     doc.setFont(undefined, 'bold');
     doc.text(`Cartellini (${p.cartelliniB.length}):`, 110, yB);
@@ -1032,6 +1017,7 @@ if (p.cartelliniB.length > 0) {
     });
     yB += 3;
 }
+
 
     if (p.mvpB) {
         yB = nuovaPaginaSeNecessario(yB);
@@ -1286,7 +1272,7 @@ async salvaPartitaAsync(id, updates) {
             vuoti_squadra_a: u.vuotiSquadraA,
             vuoti_squadra_b: u.vuotiSquadraB,
             falli_difesa_a: u.falliDifesaA,
-            falli_difesa_b: u.falliDifesaB
+            falli_difesa_b: u.falliDifesaB,
             cartellini_a: u.cartelliniA,
             cartellini_b: u.cartelliniB,
         }).eq('id', id);
@@ -2015,223 +2001,220 @@ ${p.timerTempo === 1 ? `
             },
 
             renderSezioneSegnata(p, squadra, giocatori, vuotiPerGiocatore) {
-                const nome = p[`squadra${squadra}`];
-                const gol = p[`gol${squadra}`];
-                const scalpi = p[`scalpi${squadra}`];
-                const vuoti = p[`vuoti${squadra}`];
-                const espulsi = p[`espulsi${squadra}`];
-                const punteggio = p[`punteggio${squadra}`];
+    const nome = p[`squadra${squadra}`];
+    const gol = p[`gol${squadra}`];
+    const scalpi = p[`scalpi${squadra}`];
+    const vuoti = p[`vuoti${squadra}`];
+    const espulsi = p[`espulsi${squadra}`];
+    const punteggio = p[`punteggio${squadra}`];
 
-                return `
-                    <div class="bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold text-cyan-300">${nome}</h2>
-                            <div class="text-4xl font-bold text-yellow-400">${punteggio}</div>
-                        </div>
-
-                        ${espulsi.length > 0 ? `
-                            <div class="mb-6 bg-red-900 bg-opacity-30 border border-red-700 rounded-lg p-4">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <span class="text-red-400 text-xl">🟥</span>
-                                    <span class="font-bold text-red-300">Espulsi (${espulsi.length})</span>
-                                </div>
-                                <div class="space-y-2">
-                                    ${espulsi.map(e => `
-                                        <div class="bg-red-900 bg-opacity-40 rounded px-3 py-2 flex justify-between items-center">
-                                            <span class="text-red-200">${e}</span>
-                                            <button onclick="app.rientraEspulso(${p.id}, '${squadra}', '${e}')" class="text-green-400 hover:text-green-300 text-xs font-semibold">Rientra</button>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        ` : ''}
-
-                        <div class="mb-6">
-                            <div class="flex items-center gap-2 mb-3">
-                                <span class="text-yellow-400 text-xl">⚽</span>
-                                <span class="font-bold text-gray-200">Gol (${gol.length})</span>
-                            </div>
-                            <div class="flex gap-2 mb-3">
-                                ${giocatori.length > 0 ? `
-                                    <select id="gol-${squadra}-${p.id}" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
-                                        <option value="">-- Seleziona --</option>
-                                        ${giocatori.map(g => `<option value="${g.numero} - ${g.nome}">${g.numero} - ${g.nome}</option>`).join('')}
-                                    </select>
-                                ` : `
-                                    <input type="text" id="gol-${squadra}-${p.id}" placeholder="Nome" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
-                                `}
-                                <button onclick="app.aggiungiElemento(${p.id}, '${squadra}', 'gol')" class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded font-bold">+</button>
-                            </div>
-                            <div class="space-y-2 max-h-32 overflow-y-auto">
-                                ${gol.map((g, i) => `
-                                    <div class="bg-gray-700 rounded px-3 py-2 flex justify-between items-center text-sm">
-                                        <span>⚽ ${g}</span>
-                                        <button onclick="app.rimuoviElemento(${p.id}, '${squadra}', 'gol', ${i})" class="text-red-400 hover:text-red-300">✕</button>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-
-                        <div class="mb-6">
-                            <div class="flex items-center gap-2 mb-3">
-                                <span class="text-red-400 text-xl">🔪</span>
-                                <span class="font-bold text-gray-200">Scalpi (${scalpi.length})</span>
-                            </div>
-                            <div class="flex gap-2 mb-3">
-                                ${giocatori.length > 0 ? `
-                                    <select id="scalpo-${squadra}-${p.id}" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
-                                        <option value="">-- Seleziona --</option>
-                                        ${giocatori.map(g => `<option value="${g.numero} - ${g.nome}">${g.numero} - ${g.nome}</option>`).join('')}
-                                    </select>
-                                ` : `
-                                    <input type="text" id="scalpo-${squadra}-${p.id}" placeholder="Nome" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
-                                `}
-                                <button onclick="app.aggiungiElemento(${p.id}, '${squadra}', 'scalpo')" class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded font-bold">+</button>
-                            </div>
-                            <div class="space-y-2 max-h-32 overflow-y-auto">
-                                ${scalpi.map((s, i) => `
-                                    <div class="bg-gray-700 rounded px-3 py-2 flex justify-between items-center text-sm">
-                                        <span>🔪 ${s}</span>
-                                        <button onclick="app.rimuoviElemento(${p.id}, '${squadra}', 'scalpo', ${i})" class="text-red-400 hover:text-red-300">✕</button>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-
-                        <div>
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="flex items-center gap-2">
-    <span class="text-blue-400 text-xl">🔵</span>
-    <span class="font-bold text-gray-200">Vuoti Individuali (${vuoti.length})</span>
-    <span class="ml-2 text-sm ${p[`vuotiSquadra${squadra}`] >= 14 ? 'text-orange-400' : 'text-gray-400'}">
-        | Squadra: ${p[`vuotiSquadra${squadra}`]}
-        ${p[`vuotiSquadra${squadra}`] >= 14 ? 
-    ` (prossimo fallo al ${14 + (Math.floor((p[`vuotiSquadra${squadra}`] - 14) / 3) + 1) * 3}°)` : 
-    ` (${14 - p[`vuotiSquadra${squadra}`]} al 1° fallo)`}
-    </span>
-</div>
-                                ${vuoti.length > 0 ? `
-                                    <button onclick="app.azzeraVuoti(${p.id}, '${squadra}')" class="text-xs bg-orange-600 hover:bg-orange-700 text-white px-2 py-1 rounded">Azzera 1°T</button>
-                                ` : ''}
-                            </div>
-                            <div class="flex gap-2 mb-3">
-                                ${giocatori.length > 0 ? `
-                                    <select id="vuoto-${squadra}-${p.id}" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
-                                        <option value="">-- Seleziona --</option>
-                                        ${giocatori.map(g => {
-                                            const gNome = `${g.numero} - ${g.nome}`;
-                                            const cnt = vuotiPerGiocatore[gNome] || 0;
-                                            const isEspulso = espulsi.includes(gNome);
-                                            return `<option value="${gNome}" ${isEspulso ? 'disabled' : ''}>${gNome}${cnt > 0 ? ` (${cnt})` : ''}${isEspulso ? ' [ESP]' : ''}</option>`;
-                                        }).join('')}
-                                    </select>
-                                ` : `
-                                    <input type="text" id="vuoto-${squadra}-${p.id}" placeholder="Nome" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
-                                `}
-                                <button onclick="app.aggiungiVuotoBtn(${p.id}, '${squadra}')" class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded font-bold">+</button>
-                            </div>
-                            <div class="space-y-2 max-h-32 overflow-y-auto">
-                                ${vuoti.map((v, i) => {
-                                    const cnt = vuotiPerGiocatore[v];
-                                    return `
-                                        <div class="bg-gray-700 rounded px-3 py-2 flex justify-between items-center text-sm ${cnt >= 3 ? 'border-2 border-red-500 bg-red-900 bg-opacity-30' : ''}">
-                                            <span>🔵 ${v} ${cnt >= 2 ? `<span class="text-orange-400 font-bold">(${cnt}/3)</span>` : ''}</span>
-                                            <button onclick="app.rimuoviElemento(${p.id}, '${squadra}', 'vuoto', ${i})" class="text-red-400 hover:text-red-300">✕</button>
-                                        </div>
-                                    `;
-                                }).join('')}
-                            </div>
-                        </div>
-
-<div class="mt-6">
-    <div class="flex items-center justify-between mb-3">
-        <div class="flex items-center gap-2">
-            <span class="text-xl">🟨</span>
-            <span class="font-bold text-gray-200">Cartellini</span>
-        </div>
-    </div>
-
-    <!-- Selettore giocatore e tipo cartellino -->
-    <div class="flex gap-2 mb-3">
-        ${giocatori.length > 0 ? `
-            <select id="cartellino-giocatore-${squadra}-${p.id}" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white text-sm">
-                <option value="">-- Seleziona giocatore --</option>
-                ${giocatori.map(g => `<option value="${g.numero} - ${g.nome}">${g.numero} - ${g.nome}</option>`).join('')}
-            </select>
-        ` : `
-            <input type="text" id="cartellino-giocatore-${squadra}-${p.id}" placeholder="Nome giocatore" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white text-sm">
-        `}
-    </div>
-    <div class="flex gap-2 mb-3">
-        <button onclick="
-            const el = document.getElementById('cartellino-giocatore-${squadra}-${p.id}');
-            const val = el.tagName === 'SELECT' ? el.value : el.value.trim();
-            if (!val) return;
-            app.aggiungiCartellino(${p.id}, '${squadra}', val, 'giallo');
-            el.value = '';
-        " class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-black px-3 py-2 rounded font-bold text-sm border-2 border-yellow-300">
-            🟨 Giallo
-        </button>
-        <button onclick="
-            const el = document.getElementById('cartellino-giocatore-${squadra}-${p.id}');
-            const val = el.tagName === 'SELECT' ? el.value : el.value.trim();
-            if (!val) return;
-            app.aggiungiCartellino(${p.id}, '${squadra}', val, 'rosso');
-            el.value = '';
-        " class="flex-1 bg-red-600 hover:bg-red-500 text-white px-3 py-2 rounded font-bold text-sm border-2 border-red-400">
-            🟥 Rosso
-        </button>
-        <button onclick="
-            const el = document.getElementById('cartellino-giocatore-${squadra}-${p.id}');
-            const val = el.tagName === 'SELECT' ? el.value : el.value.trim();
-            if (!val) return;
-            app.aggiungiCartellino(${p.id}, '${squadra}', val, 'nero');
-            el.value = '';
-        " class="flex-1 bg-gray-900 hover:bg-gray-800 text-white px-3 py-2 rounded font-bold text-sm border-2 border-gray-500">
-            ⬛ Nero
-        </button>
-    </div>
-
-    <!-- Lista cartellini assegnati -->
-    <div class="space-y-2 max-h-32 overflow-y-auto">
-        ${p[`cartellini${squadra}`].map((c, i) => `
-            <div class="rounded px-3 py-2 flex justify-between items-center text-sm ${
-                c.tipo === 'giallo' ? 'bg-yellow-900 bg-opacity-40 border border-yellow-700' :
-                c.tipo === 'rosso' ? 'bg-red-900 bg-opacity-40 border border-red-700' :
-                'bg-gray-900 border border-gray-600'
-            }">
-                <span class="${c.tipo === 'giallo' ? 'text-yellow-200' : c.tipo === 'rosso' ? 'text-red-200' : 'text-gray-200'}">
-                    ${c.tipo === 'giallo' ? '🟨' : c.tipo === 'rosso' ? '🟥' : '⬛'} 
-                    ${c.giocatore} 
-                    <span class="text-xs opacity-70">(${c.tipo === 'giallo' ? 'Escl. ' + c.tempo + '°T' : c.tipo === 'rosso' ? 'Escl. partita' : 'Squalificato'})</span>
-                </span>
-                <button onclick="app.rimuoviCartellino(${p.id}, '${squadra}', ${i})" class="text-red-400 hover:text-red-300 ml-2">✕</button>
+    return `
+        <div class="bg-gray-800 rounded-lg p-6 shadow-xl border border-gray-700">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-cyan-300">${nome}</h2>
+                <div class="text-4xl font-bold text-yellow-400">${punteggio}</div>
             </div>
-        `).join('')}
-    </div>
-</div>
 
-
-                        <div class="mt-6">
-    <div class="flex items-center justify-between mb-3">
-        <div class="flex items-center gap-2">
-            <span class="text-orange-400 text-xl">⚠️</span>
-            <span class="font-bold text-gray-200">Falli di Difesa</span>
-        </div>
-        <div class="text-2xl font-bold ${p[`falliDifesa${squadra}`] >= 2 ? 'text-red-400 animate-pulse' : 'text-orange-400'}">
-            ${p[`falliDifesa${squadra}`]}/3
-        </div>
-    </div>
-    <button onclick="app.aggiungiFalloDifesa(${p.id}, '${squadra}')" class="w-full ${p[`falliDifesa${squadra}`] >= 2 ? 'bg-red-600 hover:bg-red-700' : 'bg-orange-600 hover:bg-orange-700'} text-white px-4 py-2 rounded font-bold">
-        + Aggiungi Fallo
-    </button>
-    ${p[`falliDifesa${squadra}`] === 2 ? '<p class="text-xs text-red-400 mt-2 text-center font-bold animate-pulse">🚨 ATTENZIONE! Prossimo fallo = METÀ! 🚨</p>' : 
-      p[`falliDifesa${squadra}`] === 1 ? '<p class="text-xs text-orange-400 mt-2 text-center">⚠️ 1 fallo registrato</p>' : ''}
-</div>
+            ${espulsi.length > 0 ? `
+                <div class="mb-6 bg-red-900 bg-opacity-30 border border-red-700 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="text-red-400 text-xl">🟥</span>
+                        <span class="font-bold text-red-300">Espulsi (${espulsi.length})</span>
                     </div>
-                `;
-            },
+                    <div class="space-y-2">
+                        ${espulsi.map(e => `
+                            <div class="bg-red-900 bg-opacity-40 rounded px-3 py-2 flex justify-between items-center">
+                                <span class="text-red-200">${e}</span>
+                                <button onclick="app.rientraEspulso(${p.id}, '${squadra}', '${e}')" class="text-green-400 hover:text-green-300 text-xs font-semibold">Rientra</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : ''}
 
+            <div class="mb-6">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-yellow-400 text-xl">⚽</span>
+                    <span class="font-bold text-gray-200">Gol (${gol.length})</span>
+                </div>
+                <div class="flex gap-2 mb-3">
+                    ${giocatori.length > 0 ? `
+                        <select id="gol-${squadra}-${p.id}" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                            <option value="">-- Seleziona --</option>
+                            ${giocatori.map(g => `<option value="${g.numero} - ${g.nome}">${g.numero} - ${g.nome}</option>`).join('')}
+                        </select>
+                    ` : `
+                        <input type="text" id="gol-${squadra}-${p.id}" placeholder="Nome" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                    `}
+                    <button onclick="app.aggiungiElemento(${p.id}, '${squadra}', 'gol')" class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded font-bold">+</button>
+                </div>
+                <div class="space-y-2 max-h-32 overflow-y-auto">
+                    ${gol.map((g, i) => `
+                        <div class="bg-gray-700 rounded px-3 py-2 flex justify-between items-center text-sm">
+                            <span>⚽ ${g}</span>
+                            <button onclick="app.rimuoviElemento(${p.id}, '${squadra}', 'gol', ${i})" class="text-red-400 hover:text-red-300">✕</button>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-red-400 text-xl">🔪</span>
+                    <span class="font-bold text-gray-200">Scalpi (${scalpi.length})</span>
+                </div>
+                <div class="flex gap-2 mb-3">
+                    ${giocatori.length > 0 ? `
+                        <select id="scalpo-${squadra}-${p.id}" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                            <option value="">-- Seleziona --</option>
+                            ${giocatori.map(g => `<option value="${g.numero} - ${g.nome}">${g.numero} - ${g.nome}</option>`).join('')}
+                        </select>
+                    ` : `
+                        <input type="text" id="scalpo-${squadra}-${p.id}" placeholder="Nome" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                    `}
+                    <button onclick="app.aggiungiElemento(${p.id}, '${squadra}', 'scalpo')" class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded font-bold">+</button>
+                </div>
+                <div class="space-y-2 max-h-32 overflow-y-auto">
+                    ${scalpi.map((s, i) => `
+                        <div class="bg-gray-700 rounded px-3 py-2 flex justify-between items-center text-sm">
+                            <span>🔪 ${s}</span>
+                            <button onclick="app.rimuoviElemento(${p.id}, '${squadra}', 'scalpo', ${i})" class="text-red-400 hover:text-red-300">✕</button>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="text-blue-400 text-xl">🔵</span>
+                        <span class="font-bold text-gray-200">Vuoti Individuali (${vuoti.length})</span>
+                        <span class="ml-2 text-sm ${p[`vuotiSquadra${squadra}`] >= 14 ? 'text-orange-400' : 'text-gray-400'}">
+                            | Squadra: ${p[`vuotiSquadra${squadra}`]}
+                            ${p[`vuotiSquadra${squadra}`] >= 14 ? 
+                                ` (prossimo fallo al ${14 + (Math.floor((p[`vuotiSquadra${squadra}`] - 14) / 3) + 1) * 3}°)` : 
+                                ` (${14 - p[`vuotiSquadra${squadra}`]} al 1° fallo)`}
+                        </span>
+                    </div>
+                    ${vuoti.length > 0 ? `
+                        <button onclick="app.azzeraVuoti(${p.id}, '${squadra}')" class="text-xs bg-orange-600 hover:bg-orange-700 text-white px-2 py-1 rounded">Azzera 1°T</button>
+                    ` : ''}
+                </div>
+                <div class="flex gap-2 mb-3">
+                    ${giocatori.length > 0 ? `
+                        <select id="vuoto-${squadra}-${p.id}" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                            <option value="">-- Seleziona --</option>
+                            ${giocatori.map(g => {
+                                const gNome = `${g.numero} - ${g.nome}`;
+                                const cnt = vuotiPerGiocatore[gNome] || 0;
+                                const isEspulso = espulsi.includes(gNome);
+                                return `<option value="${gNome}" ${isEspulso ? 'disabled' : ''}>${gNome}${cnt > 0 ? ` (${cnt})` : ''}${isEspulso ? ' [ESP]' : ''}</option>`;
+                            }).join('')}
+                        </select>
+                    ` : `
+                        <input type="text" id="vuoto-${squadra}-${p.id}" placeholder="Nome" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white">
+                    `}
+                    <button onclick="app.aggiungiVuotoBtn(${p.id}, '${squadra}')" class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded font-bold">+</button>
+                </div>
+                <div class="space-y-2 max-h-32 overflow-y-auto">
+                    ${vuoti.map((v, i) => {
+                        const cnt = vuotiPerGiocatore[v];
+                        return `
+                            <div class="bg-gray-700 rounded px-3 py-2 flex justify-between items-center text-sm ${cnt >= 3 ? 'border-2 border-red-500 bg-red-900 bg-opacity-30' : ''}">
+                                <span>🔵 ${v} ${cnt >= 2 ? `<span class="text-orange-400 font-bold">(${cnt}/3)</span>` : ''}</span>
+                                <button onclick="app.rimuoviElemento(${p.id}, '${squadra}', 'vuoto', ${i})" class="text-red-400 hover:text-red-300">✕</button>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+
+            <div class="mt-6 border-t border-gray-700 pt-6">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">🟨</span>
+                        <span class="font-bold text-gray-200">Cartellini</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-2 mb-3">
+                    ${giocatori.length > 0 ? `
+                        <select id="cartellino-giocatore-${squadra}-${p.id}" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white text-sm">
+                            <option value="">-- Seleziona giocatore --</option>
+                            ${giocatori.map(g => `<option value="${g.numero} - ${g.nome}">${g.numero} - ${g.nome}</option>`).join('')}
+                        </select>
+                    ` : `
+                        <input type="text" id="cartellino-giocatore-${squadra}-${p.id}" placeholder="Nome giocatore" class="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white text-sm">
+                    `}
+                </div>
+                
+                <div class="flex gap-2 mb-3">
+                    <button onclick="
+                        const el = document.getElementById('cartellino-giocatore-${squadra}-${p.id}');
+                        const val = el.tagName === 'SELECT' ? el.value : el.value.trim();
+                        if (!val) return;
+                        app.aggiungiCartellino(${p.id}, '${squadra}', val, 'giallo');
+                        el.value = '';
+                    " class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-black px-3 py-2 rounded font-bold text-sm border-2 border-yellow-300">
+                        🟨 Giallo
+                    </button>
+                    <button onclick="
+                        const el = document.getElementById('cartellino-giocatore-${squadra}-${p.id}');
+                        const val = el.tagName === 'SELECT' ? el.value : el.value.trim();
+                        if (!val) return;
+                        app.aggiungiCartellino(${p.id}, '${squadra}', val, 'rosso');
+                        el.value = '';
+                    " class="flex-1 bg-red-600 hover:bg-red-500 text-white px-3 py-2 rounded font-bold text-sm border-2 border-red-400">
+                        🟥 Rosso
+                    </button>
+                    <button onclick="
+                        const el = document.getElementById('cartellino-giocatore-${squadra}-${p.id}');
+                        const val = el.tagName === 'SELECT' ? el.value : el.value.trim();
+                        if (!val) return;
+                        app.aggiungiCartellino(${p.id}, '${squadra}', val, 'nero');
+                        el.value = '';
+                    " class="flex-1 bg-gray-900 hover:bg-gray-800 text-white px-3 py-2 rounded font-bold text-sm border-2 border-gray-500">
+                        ⬛ Nero
+                    </button>
+                </div>
+
+                <div class="space-y-2 max-h-32 overflow-y-auto">
+                    ${p[`cartellini${squadra}`].map((c, i) => `
+                        <div class="rounded px-3 py-2 flex justify-between items-center text-sm ${
+                            c.tipo === 'giallo' ? 'bg-yellow-900 bg-opacity-40 border border-yellow-700' :
+                            c.tipo === 'rosso' ? 'bg-red-900 bg-opacity-40 border border-red-700' :
+                            'bg-gray-900 border border-gray-600'
+                        }">
+                            <span class="${c.tipo === 'giallo' ? 'text-yellow-200' : c.tipo === 'rosso' ? 'text-red-200' : 'text-gray-200'}">
+                                ${c.tipo === 'giallo' ? '🟨' : c.tipo === 'rosso' ? '🟥' : '⬛'} 
+                                ${c.giocatore} 
+                                <span class="text-xs opacity-70">(${c.tipo === 'giallo' ? 'Escl. ' + c.tempo + '°T' : c.tipo === 'rosso' ? 'Escl. partita' : 'Squalificato'})</span>
+                            </span>
+                            <button onclick="app.rimuoviCartellino(${p.id}, '${squadra}', ${i})" class="text-red-400 hover:text-red-300 ml-2">✕</button>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+
+            <div class="mt-6 border-t border-gray-700 pt-6">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="text-orange-400 text-xl">⚠️</span>
+                        <span class="font-bold text-gray-200">Falli di Difesa</span>
+                    </div>
+                    <div class="text-2xl font-bold ${p[`falliDifesa${squadra}`] >= 2 ? 'text-red-400 animate-pulse' : 'text-orange-400'}">
+                        ${p[`falliDifesa${squadra}`]}/3
+                    </div>
+                </div>
+                <button onclick="app.aggiungiFalloDifesa(${p.id}, '${squadra}')" class="w-full ${p[`falliDifesa${squadra}`] >= 2 ? 'bg-red-600 hover:bg-red-700' : 'bg-orange-600 hover:bg-orange-700'} text-white px-4 py-2 rounded font-bold">
+                    + Aggiungi Fallo
+                </button>
+                ${p[`falliDifesa${squadra}`] === 2 ? '<p class="text-xs text-red-400 mt-2 text-center font-bold animate-pulse">🚨 ATTENZIONE! Prossimo fallo = METÀ! 🚨</p>' : 
+                  p[`falliDifesa${squadra}`] === 1 ? '<p class="text-xs text-orange-400 mt-2 text-center">⚠️ 1 fallo registrato</p>' : ''}
+            </div>
+        </div>
+    `;
+},
             renderRiepilogo(p, squadra) {
                 const nome = p[`squadra${squadra}`];
                 const gol = p[`gol${squadra}`];
