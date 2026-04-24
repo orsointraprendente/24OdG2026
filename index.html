@@ -653,7 +653,7 @@ async apriPartita(id) {
             },
 
             async passaAlSecondoTempoManuale(id) {
-    if (!confirm('⏭ Passare al 2° tempo?\n\nI vuoti individuali verranno azzerati e gli espulsi rientreranno.\nI giocatori con cartellino giallo del 1° tempo potranno rientrare.')) return;
+    if (!confirm('⏭ Passare al 2° tempo?\n\nI vuoti individuali verranno azzerati.\nI giocatori con cartellino giallo del 1° tempo potranno rientrare.')) return;
 
     if (this.timerInterval) {
         clearInterval(this.timerInterval);
