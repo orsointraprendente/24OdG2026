@@ -408,7 +408,7 @@ aggiornaTimerLocale() {
     const elapsed = Math.floor((ora - p.timerTimestamp) / 1000);
     const secondiCorretti = p.timerSecondi + elapsed;
     
-    const tempoRegolamentare = 900;
+    const tempoRegolamentare = (p.timerTempo >= 3) ? 300 : 900;
     const recupero = p.timerTempo === 1 ? p.recupero1Tempo : p.recupero2Tempo;
     const tempoTotale = tempoRegolamentare + (recupero * 60);
     const secondiRimasti = tempoTotale - secondiCorretti;
@@ -684,6 +684,70 @@ async apriPartita(id) {
         cartelliniB: cartelliniBFiltrati
     });
 },
+async passaAllaSilverMeta(id) {
+    const p = this.partite.find(x => x.id === id);
+    if (!p) return;
+
+    if (p.punteggioA !== p.punteggioB) {
+        alert('⚠️ La Silver Meta si gioca solo in caso di parità!');
+        return;
+    }
+
+    if (!confirm('⚡ SILVER META\n\nPassare alla Silver Meta (5 minuti)?\n\n✅ Rientrano: espulsi per vuoti, cartellini gialli\n❌ Rimangono fuori: cartellini rossi e neri\n✅ Vuoti individuali azzerati (limite: 2)\n✅ Vuoti di squadra e falli rimangono')) return;
+
+    if (this.timerInterval) { clearInterval(this.timerInterval); this.timerInterval = null; }
+    this.avvisoMinutoSuonato = false;
+    this.fischioPrimoTempoSuonato = false;
+    this.fischioSecondoTempoSuonato = false;
+
+    // Mantieni solo gli espulsi per cartellino rosso/nero
+    const giocatoriRossiA = (p.cartelliniA || []).filter(c => c.tipo === 'rosso' || c.tipo === 'nero').map(c => c.giocatore);
+    const giocatoriRossiB = (p.cartelliniB || []).filter(c => c.tipo === 'rosso' || c.tipo === 'nero').map(c => c.giocatore);
+
+    // Rimuovi cartellini gialli (tornano in campo), mantieni rossi e neri
+    const cartelliniAFiltrati = (p.cartelliniA || []).filter(c => c.tipo !== 'giallo');
+    const cartelliniBFiltrati = (p.cartelliniB || []).filter(c => c.tipo !== 'giallo');
+
+    await this.aggiornaPartita(id, {
+        timerSecondi: 0,
+        timerTempo: 3,
+        timerAttivo: false,
+        timerTimestamp: 0,
+        vuotiA: [],
+        vuotiB: [],
+        espulsiA: giocatoriRossiA,
+        espulsiB: giocatoriRossiB,
+        cartelliniA: cartelliniAFiltrati,
+        cartelliniB: cartelliniBFiltrati
+    });
+},
+
+async passaAllaGoldenMeta(id) {
+    const p = this.partite.find(x => x.id === id);
+    if (!p) return;
+
+    if (p.punteggioA !== p.punteggioB) {
+        alert('⚠️ La Golden Meta si gioca solo in caso di parità!');
+        return;
+    }
+
+    if (!confirm('🥇 GOLDEN META\n\nPassare alla Golden Meta (5 minuti)?\n\n❌ Espulsi nella Silver Meta rimangono fuori\n✅ Vuoti individuali della Silver Meta mantenuti (limite: 2)\n✅ Vuoti di squadra e falli rimangono')) return;
+
+    if (this.timerInterval) { clearInterval(this.timerInterval); this.timerInterval = null; }
+    this.avvisoMinutoSuonato = false;
+    this.fischioPrimoTempoSuonato = false;
+    this.fischioSecondoTempoSuonato = false;
+
+    // Nella Golden Meta si mantiene tutto dalla Silver Meta, si azzera solo il timer
+    await this.aggiornaPartita(id, {
+        timerSecondi: 0,
+        timerTempo: 4,
+        timerAttivo: false,
+        timerTimestamp: 0
+        // vuotiA, vuotiB, espulsiA, espulsiB rimangono invariati dalla Silver Meta
+    });
+},
+
 
             async aggiungiCartellino(id, squadra, giocatore, tipo) {
     const p = this.partite.find(x => x.id === id);
@@ -777,7 +841,8 @@ async rimuoviCartellino(id, squadra, index) {
                 const p = this.partite.find(x => x.id === this.partitaSelezionata);
                 if (p) {
                     const recupero = tempo === 1 ? p.recupero1Tempo : p.recupero2Tempo;
-                    const tempoTotale = 900 + (recupero * 60);
+                    const tempoRegBase = (p.timerTempo >= 3) ? 300 : 900;
+                    const tempoTotale = tempoRegBase + (recupero * 60);
                     const percentuale = Math.min((secondi / tempoTotale) * 100, 100);
                     
                     const progressBar = document.getElementById('progress-bar');
@@ -1360,11 +1425,12 @@ async aggiungiVuoto(id, squadra, giocatore) {
     };
     
     // Espulsione al 3° vuoto personale
-    if (conteggio === 3) {
-        const espulsi = [...p[`espulsi${squadra}`], giocatore];
-        updates[`espulsi${squadra}`] = espulsi;
-        alert(`🟥 ESPULSIONE!\n${giocatore} ha 3 vuoti ed è stato espulso.`);
-    }
+    const limiteVuoti = p.timerTempo >= 3 ? 2 : 3;
+if (conteggio >= limiteVuoti) {
+    const espulsi = [...p[`espulsi${squadra}`], giocatore];
+    updates[`espulsi${squadra}`] = espulsi;
+    alert(`🟥 ESPULSIONE!\n${giocatore} ha ${limiteVuoti} vuoti ed è stato espulso.`);
+}
     
     // Fallo di difesa ai vuoti di squadra
     let messaggioFallo = '';
@@ -1502,10 +1568,19 @@ async aggiungiVuoto(id, squadra, giocatore) {
     const mvpB = document.getElementById('mvp-select-b').value;
 
     // Alert se si è ancora nel 1° tempo
-    if (p.timerTempo === 1 && (p.timerAttivo || p.timerSecondi > 0)) {
-        alert('⚠️ ATTENZIONE!\n\nIl 2° tempo non è ancora iniziato.\n\nPassa al 2° tempo prima di finalizzare la partita.');
-        return;
-    }
+if (p.timerTempo === 1 && (p.timerAttivo || p.timerSecondi > 0)) {
+    alert('⚠️ ATTENZIONE!\n\nIl 2° tempo non è ancora iniziato.\n\nPassa al 2° tempo prima di finalizzare la partita.');
+    return;
+}
+if ((p.timerTempo === 2 || p.timerTempo === 3 || p.timerTempo === 4) && p.timerAttivo) {
+    const nomeT = p.timerTempo === 2 ? '2° tempo' : p.timerTempo === 3 ? 'Silver Meta' : 'Golden Meta';
+    const conferma = confirm(`⚠️ La ${nomeT} è ancora in corso!\n\nVuoi finalizzare comunque?`);
+    if (!conferma) return;
+}
+if (p.timerTempo === 2 && p.punteggioA === p.punteggioB) {
+    const conferma = confirm('⚠️ La partita è in parità!\n\nVuoi finalizzare senza Silver Meta?');
+    if (!conferma) return;
+}
 
     // Alert se mancano gli MVP
     if (!mvpA || !mvpB) {
@@ -1930,7 +2005,8 @@ renderStatistiche() {
                 const tempoDurante = this.formatoTempo(secondiMostrati);
 
                 const recupero = p.timerTempo === 1 ? p.recupero1Tempo : p.recupero2Tempo;
-                const tempoTotale = 900 + (recupero * 60);
+                const tempoRegBase = (p.timerTempo >= 3) ? 300 : 900;
+                const tempoTotale = tempoRegBase + (recupero * 60);
                 const percentuale = Math.min((secondiMostrati / tempoTotale) * 100, 100);
 
                 const vuotiPerGiocatoreA = {};
@@ -1957,7 +2033,12 @@ renderStatistiche() {
                                     ` : `
                                         <div class="bg-gray-700 rounded-lg p-4 text-center">
                                             <div id="timer-display" class="text-4xl font-bold ${p.timerAttivo ? 'text-red-400 timer-active' : 'text-cyan-400'} mb-2 font-mono">${tempoDurante}</div>
-                                            <div id="tempo-display" class="text-sm text-gray-300 mb-1">Tempo ${p.timerTempo}/2</div>
+                                            <div id="tempo-display" class="text-sm text-gray-300 mb-1">${
+    p.timerTempo === 1 ? 'Tempo 1/2' :
+    p.timerTempo === 2 ? 'Tempo 2/2' :
+    p.timerTempo === 3 ? '⚡ Silver Meta' :
+    '🥇 Golden Meta'
+}</div>
                                             <div id="recupero-display" class="text-xs text-orange-400 font-bold mb-3 ${secondiMostrati > 900 ? '' : 'hidden'}">+${Math.floor((secondiMostrati - 900) / 60) + 1}'</div>
                                             
                                             <div class="w-full bg-gray-600 rounded-full h-2 mb-3">
@@ -1986,6 +2067,18 @@ ${p.timerTempo === 1 ? `
     <div class="mt-3 pt-3 border-t border-gray-600">
         <button onclick="app.passaAlSecondoTempoManuale(${p.id})" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded font-bold text-sm border-2 border-indigo-400">
             ⏭ Passa al 2° Tempo
+        </button>
+    </div>
+` : p.timerTempo === 2 && p.punteggioA === p.punteggioB ? `
+    <div class="mt-3 pt-3 border-t border-gray-600">
+        <button onclick="app.passaAllaSilverMeta(${p.id})" class="w-full bg-yellow-600 hover:bg-yellow-500 text-white px-3 py-2 rounded font-bold text-sm border-2 border-yellow-400">
+            ⚡ Silver Meta (parità)
+        </button>
+    </div>
+` : p.timerTempo === 3 && p.punteggioA === p.punteggioB ? `
+    <div class="mt-3 pt-3 border-t border-gray-600">
+        <button onclick="app.passaAllaGoldenMeta(${p.id})" class="w-full bg-amber-500 hover:bg-amber-400 text-white px-3 py-2 rounded font-bold text-sm border-2 border-amber-300">
+            🥇 Golden Meta (ancora parità)
         </button>
     </div>
 ` : ''}
@@ -2134,8 +2227,7 @@ ${p.timerTempo === 1 ? `
             </div>
 
             <div class="mb-6">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2">
     <span class="text-blue-400 text-xl">🔵</span>
     <span class="font-bold text-gray-200">Vuoti Individuali (${vuoti.length})</span>
     ${p.timerTempo >= 3 ? '<span class="ml-2 text-xs bg-yellow-600 text-white px-2 py-0.5 rounded-full">limite: 2</span>' : ''}
@@ -2171,7 +2263,10 @@ ${p.timerTempo === 1 ? `
                         const cnt = vuotiPerGiocatore[v];
                         return `
                             <div class="bg-gray-700 rounded px-3 py-2 flex justify-between items-center text-sm ${cnt >= 3 ? 'border-2 border-red-500 bg-red-900 bg-opacity-30' : ''}">
-                                <span>🔵 ${v} ${cnt >= 2 ? `<span class="text-orange-400 font-bold">(${cnt}/3)</span>` : ''}</span>
+                                <span>🔵 ${v} ${p.timerTempo >= 3 
+    ? (cnt >= 1 ? `<span class="text-orange-400 font-bold">(${cnt}/2)</span>` : '')
+    : (cnt >= 2 ? `<span class="text-orange-400 font-bold">(${cnt}/3)</span>` : '')
+}</span>
                                 <button onclick="app.rimuoviElemento(${p.id}, '${squadra}', 'vuoto', ${i})" class="text-red-400 hover:text-red-300">✕</button>
                             </div>
                         `;
