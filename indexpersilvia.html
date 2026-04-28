@@ -653,7 +653,7 @@ async apriPartita(id) {
             },
 
             async passaAlSecondoTempoManuale(id) {
-    if (!confirm('⏭ Passare al 2° tempo?\n\nI vuoti individuali verranno azzerati\nI giocatori con cartellino giallo del 1° tempo potranno rientrare.')) return;
+    if (!confirm('⏭ Passare al 2° tempo?\n\nI vuoti individuali verranno azzerati.\nI giocatori con cartellino giallo del 1° tempo potranno rientrare.')) return;
 
     if (this.timerInterval) {
         clearInterval(this.timerInterval);
@@ -684,6 +684,7 @@ async apriPartita(id) {
         cartelliniB: cartelliniBFiltrati
     });
 },
+
 async passaAllaSilverMeta(id) {
     const p = this.partite.find(x => x.id === id);
     if (!p) return;
@@ -1425,7 +1426,7 @@ async aggiungiVuoto(id, squadra, giocatore) {
     };
     
     // Espulsione al 3° vuoto personale
-    const limiteVuoti = p.timerTempo >= 3 ? 2 : 3;
+const limiteVuoti = p.timerTempo >= 3 ? 2 : 3;
 if (conteggio >= limiteVuoti) {
     const espulsi = [...p[`espulsi${squadra}`], giocatore];
     updates[`espulsi${squadra}`] = espulsi;
@@ -2006,9 +2007,8 @@ renderStatistiche() {
 
                 const recupero = p.timerTempo === 1 ? p.recupero1Tempo : p.recupero2Tempo;
                 const tempoRegBase = (p.timerTempo >= 3) ? 300 : 900;
-                const tempoTotale = tempoRegBase + (recupero * 60);
-                const percentuale = Math.min((secondiMostrati / tempoTotale) * 100, 100);
-
+const tempoTotale = tempoRegBase + (recupero * 60);
+const percentuale = Math.min((secondiMostrati / tempoTotale) * 100, 100);
                 const vuotiPerGiocatoreA = {};
                 const vuotiPerGiocatoreB = {};
                 p.vuotiA.forEach(v => vuotiPerGiocatoreA[v] = (vuotiPerGiocatoreA[v] || 0) + 1);
@@ -2069,18 +2069,32 @@ ${p.timerTempo === 1 ? `
             ⏭ Passa al 2° Tempo
         </button>
     </div>
-` : p.timerTempo === 2 && p.punteggioA === p.punteggioB ? `
+` : p.timerTempo === 2 ? `
     <div class="mt-3 pt-3 border-t border-gray-600">
-        <button onclick="app.passaAllaSilverMeta(${p.id})" class="w-full bg-yellow-600 hover:bg-yellow-500 text-white px-3 py-2 rounded font-bold text-sm border-2 border-yellow-400">
-            ⚡ Silver Meta (parità)
-        </button>
+        ${p.punteggioA === p.punteggioB ? `
+            <button onclick="app.passaAllaSilverMeta(${p.id})" class="w-full bg-yellow-600 hover:bg-yellow-500 text-white px-3 py-2 rounded font-bold text-sm border-2 border-yellow-400 mb-2">
+                ⚡ Silver Meta (parità)
+            </button>
+        ` : `
+            <div class="text-xs text-gray-500 text-center py-1">
+                Silver Meta non disponibile (risultato non in parità)
+            </div>
+        `}
     </div>
-` : p.timerTempo === 3 && p.punteggioA === p.punteggioB ? `
+`
+` : p.timerTempo === 3 ? `
     <div class="mt-3 pt-3 border-t border-gray-600">
-        <button onclick="app.passaAllaGoldenMeta(${p.id})" class="w-full bg-amber-500 hover:bg-amber-400 text-white px-3 py-2 rounded font-bold text-sm border-2 border-amber-300">
-            🥇 Golden Meta (ancora parità)
-        </button>
+        ${p.punteggioA === p.punteggioB ? `
+            <button onclick="app.passaAllaGoldenMeta(${p.id})" class="w-full bg-amber-500 hover:bg-amber-400 text-white px-3 py-2 rounded font-bold text-sm border-2 border-amber-300 mb-2">
+                🥇 Golden Meta (ancora parità)
+            </button>
+        ` : `
+            <div class="text-xs text-gray-500 text-center py-1">
+                Golden Meta non disponibile (risultato non in parità)
+            </div>
+        `}
     </div>
+`
 ` : ''}
                                         </div>
                                     `}
@@ -2227,7 +2241,8 @@ ${p.timerTempo === 1 ? `
             </div>
 
             <div class="mb-6">
-                <div class="flex items-center gap-2">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
     <span class="text-blue-400 text-xl">🔵</span>
     <span class="font-bold text-gray-200">Vuoti Individuali (${vuoti.length})</span>
     ${p.timerTempo >= 3 ? '<span class="ml-2 text-xs bg-yellow-600 text-white px-2 py-0.5 rounded-full">limite: 2</span>' : ''}
