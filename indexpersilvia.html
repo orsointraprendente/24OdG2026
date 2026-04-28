@@ -843,7 +843,7 @@ async rimuoviCartellino(id, squadra, index) {
                 if (p) {
                     const recupero = tempo === 1 ? p.recupero1Tempo : p.recupero2Tempo;
                     const tempoRegBase = (p.timerTempo >= 3) ? 300 : 900;
-                    const tempoTotale = tempoRegBase + (recupero * 60);
+			const tempoTotale = tempoRegBase + (recupero * 60);
                     const percentuale = Math.min((secondi / tempoTotale) * 100, 100);
                     
                     const progressBar = document.getElementById('progress-bar');
@@ -2009,6 +2009,7 @@ renderStatistiche() {
                 const tempoRegBase = (p.timerTempo >= 3) ? 300 : 900;
 const tempoTotale = tempoRegBase + (recupero * 60);
 const percentuale = Math.min((secondiMostrati / tempoTotale) * 100, 100);
+
                 const vuotiPerGiocatoreA = {};
                 const vuotiPerGiocatoreB = {};
                 p.vuotiA.forEach(v => vuotiPerGiocatoreA[v] = (vuotiPerGiocatoreA[v] || 0) + 1);
@@ -2081,7 +2082,6 @@ ${p.timerTempo === 1 ? `
             </div>
         `}
     </div>
-`
 ` : p.timerTempo === 3 ? `
     <div class="mt-3 pt-3 border-t border-gray-600">
         ${p.punteggioA === p.punteggioB ? `
@@ -2094,7 +2094,6 @@ ${p.timerTempo === 1 ? `
             </div>
         `}
     </div>
-`
 ` : ''}
                                         </div>
                                     `}
